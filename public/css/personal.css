@@ -1,0 +1,93 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.personal-section{
+    padding-top: 5em;
+}
+.nav-sidebar{
+    list-style: none;
+    text-transform: uppercase;
+}
+.nav-sidebar li a{
+    text-decoration: none;
+    color: #222222;
+}
+.nav-sidebar li a:hover{
+    font-weight: 900;
+}
+.heading{
+    border-bottom: solid 1px #222222;
+    padding-bottom: 1em;
+}
+.title-account-info{
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 900;
+}
+.form-group-title{
+    padding-top: 1em;
+}
+.form-group-title h1{
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+.form-info{
+    width: 60%;
+    font-size: 14px;
+    padding-bottom: 2em;
+}
+.form-info input{
+    font-size: 14px;
+}
+.form-info button{
+    text-transform: uppercase;
+    background: #F4EECE;
+    border: solid 1px #F4EECE;
+    font-size: 14px;
+}
+.form-info button:hover{
+    background: #ffffff;
+    border: solid 1px #F4EECE
+}
+.separate{
+    border-bottom: solid 1px;
+}
+.change-password-box{
+    font-size: 14px;
+}
+.change-password-title{
+    text-transform: uppercase;
+    font-weight: 900;
+}
+.form-change-password{
+    width: 30%;
+    font-size: 14px;
+}
+.form-change-password input{
+    font-size: 14px;
+}
+.form-change-password button{
+    text-transform: uppercase;
+    font-size: 14px;
+    background: #F4EECE;
+    border: solid 1px #F4EECE;
+}
+.form-change-password button:hover{
+    background: #ffffff;
+    border: solid 1px #F4EECE;
+}
+@media(max-width: 1024px){
+    .nav-sidebar{
+        text-align: center;
+    }
+    .personal-section{
+        padding-top: 0;
+    }
+    .title-account-info{
+        text-align: center;
+        font-size: 25px;
+    }
+}

@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Open+Sans&display=swap');
+body{
+    font-family: 'Chakra Petch', sans-serif !important;
+    color: #222222;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.breadcrumb{
+    font-size: 13px;
+}
+.breadcrumb .breadcrumb-item a{
+    text-decoration: none;
+    color: #222222;
+}
+.form-select{
+    width: 30%;
+    font-size: 13px;
+    margin-left: 214px;
+    margin-bottom: 2em;
+}
+.product-section{
+    padding-top: 2em;
+}
+.page-title{
+    margin-left: 23px;
+}
+@media(max-width: 950px){
+    .form-select{
+        margin-left: 60%;
+        width: 50%;
+    }
+    .page-title{
+        margin-left: 7%;
+    }
+    .product-img{
+        width: 130%;
+        height: 80%;
+    }
+    .breadcrumb{
+        font-size: 10px;
+    }
+}
+@media(max-width: 700px){
+    .product-section{
+        padding-top: 0;
+    }
+    .browse{
+        display: none;
+    }
+    .title-page{
+        margin-left: 0;
+        text-align: center;
+    }
+    .navigation{
+        padding-bottom: 0;
+    }
+    .product-img{
+        width: 120%;
+        height: 80%;    
+    }
+    .form-select{
+        margin-left: 73%;
+        width: 30%;
+    }
+}

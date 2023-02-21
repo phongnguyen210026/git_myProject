@@ -1,0 +1,43 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.personal-section{
+    padding-top: 5em;
+}
+.nav-sidebar{
+    list-style: none;
+    text-transform: uppercase;
+}
+.nav-sidebar li a{
+    text-decoration: none;
+    color: #222222;
+}
+.nav-sidebar li a:hover{
+    font-weight: 900;
+}
+.heading{
+    border-bottom: solid 1px #222222;
+    padding-bottom: 1em;
+}
+.title-order-history{
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 900;
+}
+.table-box{
+    padding-top: 2em;
+}
+@media(max-width: 1024px){
+    .nav-sidebar{
+        text-align: center;
+    }
+    .personal-section{
+        padding-top: 0;
+    }
+    .title-order-history{
+        text-align: center;
+        font-size: 25px;
+    }
+}

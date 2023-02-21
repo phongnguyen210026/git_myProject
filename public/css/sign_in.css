@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Open+Sans&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Chakra Petch', sans-serif !important;
+    color: #222222;
+}
+.account-title{
+    text-align: center;
+    font-weight: 900;
+}
+.sign_in{
+    width: 50%;
+    margin: auto;
+}
+.login-btn{
+    background: #F4EECE;
+    border: solid #F4EECE 1px;
+    color: #222222;
+}
+.login-btn:hover{
+    background: #ffffff;
+    color: #222222;
+    border: solid #F4EECE 1px;
+}
+#first-name, #last-name,
+#email, #password{
+    border: solid #F4EECE 1px;
+}
+.return-box{
+    border-top: solid 1px #F4EECE;
+}
+.return-btn{
+    text-shadow: 0 0 1px #222222;
+    color: #F4EECE;
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-left: 255px;
+    text-decoration: none;
+}
+.return-btn:hover{
+    color: #ffffff;
+}
+.return-box .return-icon i{
+    font-size: 20px
+}
+@media(max-width: 1200px){
+    .return-btn{
+        margin-left: 210px;
+    }
+}
+@media(max-width: 950px){
+    .return-btn{
+        margin-left: 150px;
+    }
+}
+.menu-one, .menu-two,
+.menu-three, .menu-four{
+    z-index: 1;
+}

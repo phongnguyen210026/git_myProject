@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login | Shopinist{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/sign_in.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <script src="{{ asset('Js/homepage.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+<section class="pt-5 pb-3">
+    <div class="container">
+        <div class="sign_in">
+            <div>
+                <h2 class="account-title">Login</h2>
+            </div>
+            <form action="" method="post" class="sign-in-form">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {# {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %} #}
+                <div class="form-floating mb-3 mt-3">
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+                    <label for="password">Password</label>
+                </div>
+                <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+                >
+                <input type="submit" class="btn btn-success login-btn" value="SIGN IN">
+                <div>
+                <style>
+                    .register-link{
+                        color: #222222;
+                    }
+                    .register-link:hover{
+                        color: #999999;
+                    }
+                    .register-text{
+                        font-size: 14px;
+                    }
+                </style>
+                    <p class="register-text">If you don't have an account. <a class="register-link" href="{{path('app_register')}}">Click here to create a new account.</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<section class="pb-5">
+    <div class="container return-box">
+        <a class="return-btn"href="{{path('app_home')}}">
+        <span class="return-icon"><i class="bi bi-arrow-return-left"></i></span> 
+        Return to Store</a>
+    </div>
+</section>
+{# <form method="post" class="sign-in-form">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <div class="form-floating mb-3 mt-3">
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required>
+        <label for="email">Email</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+        <label for="password">Password</label>
+    </div>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    > #}
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+    {# <input type="submit" class="btn btn-success login-btn" value="SIGN IN">
+    <input type="submit" class="btn btn-success register-btn" value="REGISTER">
+</form> #}
+{% include 'footer.html.twig' %}
+{% endblock %}

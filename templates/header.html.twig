@@ -1,0 +1,209 @@
+{% block body %}
+    <header>
+            <div class="container-fluid eyebrow-carousel">
+                <div class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active text-center">
+                        Free shipping 50%
+                        <a class="detail" href="#">Detail>></a>
+                      </div>
+                      <div class="carousel-item text-center">
+                        Free shipping 50%
+                        <a class="detail" href="#">Detail>></a>
+                      </div>
+                      <div class="carousel-item text-center">
+                        Free shipping 50%
+                        <a class="detail" href="#">Detail>></a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid user-layout">
+                <img class="me-auto logo-mobile" src="../images/My project-1.png" alt="" width="150px" height="100%">
+                {% if app.user %}
+                <style>
+                    .personal-link{
+                        text-decoration: none;
+                        color: #222222;
+                    }
+                    .personal-link:hover{
+                        color: #ffffff;
+                    }
+                </style>
+                <a href="{{path('app_account')}}" class="personal-link" href="#">{{last_username}}</a>
+                {% endif %}
+                {% if app.user == null %}
+                <a class="signin-link me-5" href="{{path('app_login')}}">
+                    <span class="user-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                          </svg>
+                    </span>
+                    <span class="signin">Sign in</span>
+                </a>
+                {% endif %}
+            </div>
+            <div class="container-fluid logo-layout">
+                <div class="logo-box">
+                    <img class="me-auto logo" src="../images/My project-1.png" alt="" width="150px" height="100%">
+                    <form action="" class="search-box">
+                        <input type="text" class="search-box_input" required>
+                        <button class="search-box_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                    <a class="cart-link" href="#"><span class="cart"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
+                      </svg></span></a>
+                    <div class="bars"><i class="fa-solid fa-bars"></i></div>
+                </div>
+            </div>
+            <div class="container-fluid navigation">
+                <nav>
+                    <ul class="main-menu d-flex flex-row" id="navbar">
+                        {% if app.user %}
+                        <style>
+                            .personal-link-mobile{
+                                display: none;
+                            }
+                        </style>
+                        <a href="{{path('app_account')}}" class="personal-link-mobile">{{last_username}}</a>
+                        {% endif %}
+                        {% if app.user == null %}
+                        <li id="login">
+                            <a class="signin-link-mobile" href="{{path('app_login')}}">
+                                <span class="user-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                      </svg>
+                                </span>
+                                <span class="signin">Sign in</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li><a href="">Home</a></li>
+                        <li class="drop-one">
+                            <a href="">Women's <span>&#11167</span></a>
+                            <div class="menu-one">
+                                <ul>
+                                    <li><h4>Shop by Category</h4></li>
+                                    <li><a href="">Shop All Women's</a></li>
+                                    <li><a href="">New</a></li>
+                                    <li><a href="">Dresses</a></li>
+                                    <li><a href="">Tops</a></li>
+                                    <li><a href="">Jackets</a></li>
+                                    <li><a href="">Pants</a></li>
+                                    <li><a href="">Skirts</a></li>
+                                    <li><a href="">Jeans</a></li>
+                                    <li><a href="">Swim</a></li>
+                                    <li><a href="">Vintage</a></li>
+                                    <li><a href="">Shoes</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Featured</h4></li>
+                                    <li><a href="">Prairie Collection</a></li>
+                                    <li><a href="">Balletcore Trend</a></li>
+                                    <li><a href="">Celebrates: Black History Month</a></li>
+                                    <li><a href="">2000's Nostalgia</a></li>
+                                    <li><a href="">Corset Tops + Dresses</a></li>
+                                    <li><a href="">Party Clothes + Accessories</a></li>
+                                    <li><a href="">The Cargo Shop</a></li>
+                                    <li><a href="">Selling Fast</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Brands</h4></li>
+                                    <li><a href="">BAGGU</a></li>
+                                    <li><a href="">BDG</a></li>
+                                    <li><a href="">Champion</a></li>
+                                    <li><a href="">Dickies</a></li>
+                                    <li><a href="">Levi’s</a></li>
+                                    <li><a href="">OBEY</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="drop-two">
+                            <a href="">Men's <span>&#11167</span></a>
+                            <div class="menu-two">
+                                <ul>
+                                    <li><h4>Shop by Category</h4></li>
+                                    <li><a href="">Shop All Men's</a></li>
+                                    <li><a href="">Hoodies + Sweatshirts</a></li>
+                                    <li><a href="">Coats + Jackets</a></li>
+                                    <li><a href="">Jeans</a></li>
+                                    <li><a href="">Shoes</a></li>
+                                    <li><a href="">Underwear + Lounge</a></li>
+                                    <li><a href="">Vintage</a></li>
+                                    <li><a href="">Hats</a></li>
+                                    <li><a href="">Accessories</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Featured</h4></li>
+                                    <li><a href="">Celebrates: Black History Month</a></li>
+                                    <li><a href="">iets frans...</a></li>
+                                    <li><a href="">The Love Shop</a></li>
+                                    <li><a href="">The Cargo Shop</a></li>
+                                    <li><a href="">Get Outside</a></li>
+                                    <li><a href="">The Cord Shop</a></li>
+                                    <li><a href="">NBA Sports Shop</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Brands</h4></li>
+                                    <li><a href="">BAGGU</a></li>
+                                    <li><a href="">BDG</a></li>
+                                    <li><a href="">Champion</a></li>
+                                    <li><a href="">Dickies</a></li>
+                                    <li><a href="">Levi’s</a></li>
+                                    <li><a href="">OBEY</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="drop-three">
+                            <a href="">Brands <span>&#11167</span></a>
+                            <div class="menu-three">
+                                <ul>
+                                    <li><h4>Shop by Top Brands</h4></li>
+                                    <li><a href="">Explore All Brands</a></li>
+                                    <li><a href="">Adidas</a></li>
+                                    <li><a href="">BDG</a></li>
+                                    <li><a href="">Champion</a></li>
+                                    <li><a href="">Dickies</a></li>
+                                    <li><a href="">FILA</a></li>
+                                    <li><a href="">Levi’s</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Emerging Brands</h4></li>
+                                    <li><a href="">Ed Hardy</a></li>
+                                    <li><a href="">Fiorucci</a></li>
+                                    <li><a href="">MadeMe</a></li>
+                                    <li><a href="">OBEY</a></li>
+                                    <li><a href="">The Ragged Priest</a></li>
+                                    <li><a href="">True Religion</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="drop-four">
+                            <a href="">Sale <span>&#11167</span></a>
+                            <div class="menu-four">
+                                <ul>
+                                    <li><h4>Shop by Category</h4></li>
+                                    <li><a href="">Shop All Sale</a></li>
+                                    <li><a href="">Women's Sale</a></li>
+                                    <li><a href="">Men's Sale</a></li>
+                                    <li><a href="">Home Sale</a></li>
+                                    <li><a href="">Lifestyle Sale</a></li>
+                                    <li><a href="">Beauty Sale</a></li>
+                                </ul>
+                                <ul>
+                                    <li><h4>Featured</h4></li>
+                                    <li><a href="">Women's Just Added</a></li>
+                                    <li><a href="">Men's Just Added</a></li>
+                                    <li><a href="">Home Just Added</a></li>
+                                    <li><a href="">Bestsellers</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+{% endblock %}

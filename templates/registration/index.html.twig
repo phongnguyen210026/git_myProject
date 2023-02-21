@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Account | Shopinist{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/sign_up.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="pt-5 pb-3">
+            <div class="container">
+                <div class="sign_up">
+                    <div>
+                        <h2 class="create-account-title">Create Account</h2>
+                    </div>
+                    {# <form action="" class="sign-up-form"> #}
+                    {{ form_start(registrationForm, {'attr':{'class':'sign-up-form'}}) }}
+                        <div class="form-floating mb-3 mt-3">
+                            {# <input type="text" class="form-control" id="first-name" placeholder="Enter your first name" name="first-name" required> #}
+                            {{ form_widget(registrationForm.first_name, {'id': 'first_name', 'attr':{'class':'form-control'}}) }}
+                            <label for="first-name">First name</label>
+                        </div>
+                        <div class="form-floating mb-3 mt-3">
+                            {# <input type="text" class="form-control" id="last-name" placeholder="Enter your last name" name="last-name" required> #}
+                            {{ form_widget(registrationForm.last_name, {'attr':{'class':'form-control'}}) }}
+                            <label for="last-name">Last name</label>
+                        </div>
+                        <div class="form-floating mb-3 mt-3">
+                            {# <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required> #}
+                            {{ form_widget(registrationForm.email, {'attr':{'class':'form-control'}}) }}
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-floating mb-3 mt-3">
+                            {# <input type="password" class="form-control" id="password" placeholder="Enter a new password" name="password" required> #}
+                            {{ form_widget(registrationForm.password, {'attr':{'class':'form-control'}}) }}
+                            <label for="password">Password</label>
+                        </div>
+                        {# <input type="submit" class="btn btn-success create-btn" value="CREATE"> #}
+                        {{ form_widget(registrationForm.save, {'attr':{'class':'btn btn-success create-btn'}}) }}
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </section>
+        <section class="pb-5">
+            <div class="container return-box">
+                <a class="return-btn"href="{{path('app_home')}}">
+                    <span class="return-icon"><i class="bi bi-arrow-return-left"></i></span> 
+                    Return to Store</a>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}
+
