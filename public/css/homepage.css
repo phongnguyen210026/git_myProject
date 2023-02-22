@@ -33,6 +33,9 @@ body{
     text-decoration: none;
     color: #222222;
 }
+.signin-link:hover{
+    color: #ffffff;
+}
 #navbar #login{
     display: none;
 }

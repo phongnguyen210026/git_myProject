@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product | Shopinist{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="pb-5 product-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 title-page">
+                        <h3 class="page-title">Hoodie</h3>
+                    </div>
+                    <div class="col-md-4 browse">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Photos</a></li>
+                            <li class="breadcrumb-item"><a href="#">Summer 2017</a></li>
+                            <li class="breadcrumb-item"><a href="#">Italy</a></li>
+                            <li class="breadcrumb-item active">Rome</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="" id="" class="form-select">
+                            <option value="">Featured</option>
+                            <option value="descending">Price: High to Low</option>
+                            <option value="ascending">Price: Low to High</option>
+                            <option value="newest">Newest</option>
+                            <option value="best-selling">Best Sellers</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
+                            <div class="view-click"><span class="view-link">View Details</span></div>
+                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
+                            <div class="product-price">$50</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

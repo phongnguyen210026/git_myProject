@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserUpdateType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,16 +18,30 @@ class MainController extends AbstractController
      */
     public function home(Request $req, AuthenticationUtils $authenticationUtils): Response
     {
-        
+        $user = new User();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('main/index.html.twig', ['last_username'=>$lastUsername]);
     }
     /**
-     * @Route("/account", name="app_account")
+     * @Route("/account/{id}", name="app_account")
      */
-    public function account(Request $req, AuthenticationUtils $authenticationUtils): Response
+    public function account(Request $req, AuthenticationUtils $authenticationUtils, User $user, UserRepository $repo): Response
+    {
+        $form = $this->createForm(UserUpdateType::class, $user);
+        $form->handleRequest($req);
+        $lastUsername = $authenticationUtils->getLastUsername();
+        if($form->isSubmitted() && $form->isValid()){
+            $repo->save($user,true);
+            // return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);
+        }
+        return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);
+    }
+    /**
+     * @Route("/product", name="app_product")
+     */
+    public function showProduct(AuthenticationUtils $authenticationUtils): Response
     {
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('main/account.html.twig', ['last_username'=>$lastUsername]);
+        return $this->render('main/product.html.twig', ['last_username'=>$lastUsername]);
     }
 }

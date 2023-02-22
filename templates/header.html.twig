@@ -30,7 +30,7 @@
                         color: #ffffff;
                     }
                 </style>
-                <a href="{{path('app_account')}}" class="personal-link" href="#">{{last_username}}</a>
+                    <a href="{{path('app_account')}}" class="personal-link" href="#">{{last_username}}</a>
                 {% endif %}
                 {% if app.user == null %}
                 <a class="signin-link me-5" href="{{path('app_login')}}">
@@ -81,34 +81,21 @@
                             </a>
                         </li>
                         {% endif %}
-                        <li><a href="">Home</a></li>
+                        <li><a href="{{path('app_home')}}">Home</a></li>
                         <li class="drop-one">
                             <a href="">Women's <span>&#11167</span></a>
                             <div class="menu-one">
                                 <ul>
                                     <li><h4>Shop by Category</h4></li>
-                                    <li><a href="">Shop All Women's</a></li>
-                                    <li><a href="">New</a></li>
-                                    <li><a href="">Dresses</a></li>
-                                    <li><a href="">Tops</a></li>
+                                    <li><a href="{{path('app_product')}}">Shop All Women's</a></li>
+                                    <li><a href="{{path('app_product')}}">Dresses</a></li>
+                                    <li><a href="{{path('app_product')}}">Tops</a></li>
                                     <li><a href="">Jackets</a></li>
                                     <li><a href="">Pants</a></li>
                                     <li><a href="">Skirts</a></li>
                                     <li><a href="">Jeans</a></li>
-                                    <li><a href="">Swim</a></li>
-                                    <li><a href="">Vintage</a></li>
                                     <li><a href="">Shoes</a></li>
-                                </ul>
-                                <ul>
-                                    <li><h4>Featured</h4></li>
-                                    <li><a href="">Prairie Collection</a></li>
-                                    <li><a href="">Balletcore Trend</a></li>
-                                    <li><a href="">Celebrates: Black History Month</a></li>
-                                    <li><a href="">2000's Nostalgia</a></li>
-                                    <li><a href="">Corset Tops + Dresses</a></li>
-                                    <li><a href="">Party Clothes + Accessories</a></li>
-                                    <li><a href="">The Cargo Shop</a></li>
-                                    <li><a href="">Selling Fast</a></li>
+                                    <li><a href="">Vintage</a></li>
                                 </ul>
                                 <ul>
                                     <li><h4>Brands</h4></li>
@@ -137,16 +124,6 @@
                                     <li><a href="">Accessories</a></li>
                                 </ul>
                                 <ul>
-                                    <li><h4>Featured</h4></li>
-                                    <li><a href="">Celebrates: Black History Month</a></li>
-                                    <li><a href="">iets frans...</a></li>
-                                    <li><a href="">The Love Shop</a></li>
-                                    <li><a href="">The Cargo Shop</a></li>
-                                    <li><a href="">Get Outside</a></li>
-                                    <li><a href="">The Cord Shop</a></li>
-                                    <li><a href="">NBA Sports Shop</a></li>
-                                </ul>
-                                <ul>
                                     <li><h4>Brands</h4></li>
                                     <li><a href="">BAGGU</a></li>
                                     <li><a href="">BDG</a></li>
@@ -169,15 +146,6 @@
                                     <li><a href="">Dickies</a></li>
                                     <li><a href="">FILA</a></li>
                                     <li><a href="">Levi’s</a></li>
-                                </ul>
-                                <ul>
-                                    <li><h4>Emerging Brands</h4></li>
-                                    <li><a href="">Ed Hardy</a></li>
-                                    <li><a href="">Fiorucci</a></li>
-                                    <li><a href="">MadeMe</a></li>
-                                    <li><a href="">OBEY</a></li>
-                                    <li><a href="">The Ragged Priest</a></li>
-                                    <li><a href="">True Religion</a></li>
                                 </ul>
                             </div>
                         </li>
