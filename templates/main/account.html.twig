@@ -50,7 +50,8 @@
                             </div>
                             {# <button type="submit" class="btn btn-info">update account</button> #}
                             {{ form_widget(userForm.save, {'attr': {'class':'btn btn-info user-update-btn'}}) }}
-                        </form>
+                        {{ form_end(userForm) }}
+                        {# </form> #}
                         <div class="separate"></div>
                         <div class="change-password-box">
                             <p class="change-password-title">change password</p>

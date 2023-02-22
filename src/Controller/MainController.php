@@ -23,15 +23,27 @@ class MainController extends AbstractController
         return $this->render('main/index.html.twig', ['last_username'=>$lastUsername]);
     }
     /**
-     * @Route("/account/{id}", name="app_account")
+     * @Route("/account", name="app_account")
      */
-    public function account(Request $req, AuthenticationUtils $authenticationUtils, User $user, UserRepository $repo): Response
+    public function account(Request $req, AuthenticationUtils $authenticationUtils, UserRepository $repo): Response
     {
+        $user = $this->getUser();
+        // $data[]=[
+            
+        //     'name'=>$user->getFirstName(),
+        //     'email'=>$user->getEmail()
+        // ];
+        // return $this->json($data[0]);  
+
         $form = $this->createForm(UserUpdateType::class, $user);
         $form->handleRequest($req);
         $lastUsername = $authenticationUtils->getLastUsername();
         if($form->isSubmitted() && $form->isValid()){
             $repo->save($user,true);
+            $this->addFlash(
+               'success',
+               'Your information was updated'
+            );
             // return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);
         }
         return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);
