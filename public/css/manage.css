@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.nav-sidebar{
+    list-style: none;
+    text-transform: uppercase;
+}
+.nav-sidebar li a{
+    text-decoration: none;
+    color: #222222;
+}
+.nav-sidebar li a:hover{
+    font-weight: 900;
+}
+.manage-section{
+    padding-top: 5em;
+    margin-bottom: 5em;
+}
+.title-manage-info{
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 900;
+}
+.insert-link .btn{
+    background: #F4EECE;
+    border: solid 1px #F4EECE;
+}
+.insert-link:hover button{
+    background: #ffffff;
+    border:solid 1px #F4EECE;       
+}
+.action-row a{
+    text-decoration: none;
+}

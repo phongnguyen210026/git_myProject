@@ -18,7 +18,6 @@ class MainController extends AbstractController
      */
     public function home(Request $req, AuthenticationUtils $authenticationUtils): Response
     {
-        $user = new User();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('main/index.html.twig', ['last_username'=>$lastUsername]);
     }
@@ -40,10 +39,7 @@ class MainController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         if($form->isSubmitted() && $form->isValid()){
             $repo->save($user,true);
-            $this->addFlash(
-               'success',
-               'Your information was updated'
-            );
+
             // return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);
         }
         return $this->render('main/account.html.twig', ['last_username'=>$lastUsername, 'userForm'=>$form->createView()]);

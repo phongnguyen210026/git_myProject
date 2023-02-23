@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\BrandRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
@@ -19,15 +17,7 @@ class Brand
     private ?string $brand_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $brand_image = null;
-
-    #[ORM\OneToMany(mappedBy: 'brand', targetEntity: Product::class, orphanRemoval: true)]
-    private Collection $products;
-
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
-    }
+    private ?string $image = null;
 
     public function getId(): ?int
     {
@@ -46,44 +36,14 @@ class Brand
         return $this;
     }
 
-    public function getBrandImage(): ?string
+    public function getImage(): ?string
     {
-        return $this->brand_image;
+        return $this->image;
     }
 
-    public function setBrandImage(?string $brand_image): self
+    public function setImage(?string $image): self
     {
-        $this->brand_image = $brand_image;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setBrand($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getBrand() === $this) {
-                $product->setBrand(null);
-            }
-        }
+        $this->image = $image;
 
         return $this;
     }

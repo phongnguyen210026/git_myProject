@@ -149,27 +149,9 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="drop-four">
-                            <a href="">Sale <span>&#11167</span></a>
-                            <div class="menu-four">
-                                <ul>
-                                    <li><h4>Shop by Category</h4></li>
-                                    <li><a href="">Shop All Sale</a></li>
-                                    <li><a href="">Women's Sale</a></li>
-                                    <li><a href="">Men's Sale</a></li>
-                                    <li><a href="">Home Sale</a></li>
-                                    <li><a href="">Lifestyle Sale</a></li>
-                                    <li><a href="">Beauty Sale</a></li>
-                                </ul>
-                                <ul>
-                                    <li><h4>Featured</h4></li>
-                                    <li><a href="">Women's Just Added</a></li>
-                                    <li><a href="">Men's Just Added</a></li>
-                                    <li><a href="">Home Just Added</a></li>
-                                    <li><a href="">Bestsellers</a></li>
-                                </ul>
-                            </div>
-                        </li>
+                        {% if is_granted("ROLE_ADMIN") %}
+                        <li><a href="{{path('show_manage')}}">Manage</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
