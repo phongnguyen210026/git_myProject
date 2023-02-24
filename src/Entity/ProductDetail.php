@@ -17,13 +17,10 @@ class ProductDetail
     private ?string $size = null;
 
     #[ORM\Column]
-    private ?float $product_price = null;
-
-    #[ORM\Column]
-    private ?bool $product_status = null;
-
-    #[ORM\Column]
     private ?int $stock = null;
+
+    #[ORM\Column]
+    private ?bool $status = null;
 
     public function getId(): ?int
     {
@@ -42,30 +39,6 @@ class ProductDetail
         return $this;
     }
 
-    public function getProductPrice(): ?float
-    {
-        return $this->product_price;
-    }
-
-    public function setProductPrice(float $product_price): self
-    {
-        $this->product_price = $product_price;
-
-        return $this;
-    }
-
-    public function isProductStatus(): ?bool
-    {
-        return $this->product_status;
-    }
-
-    public function setProductStatus(bool $product_status): self
-    {
-        $this->product_status = $product_status;
-
-        return $this;
-    }
-
     public function getStock(): ?int
     {
         return $this->stock;
@@ -74,6 +47,18 @@ class ProductDetail
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

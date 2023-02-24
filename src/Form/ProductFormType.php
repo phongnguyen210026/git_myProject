@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -22,6 +24,10 @@ class ProductFormType extends AbstractType
                 'required'=>true,
                 'label'=> 'Product name'
             ])
+            ->add('price', TextType::class, [
+                'required'=>true,
+                'label'=>'Price'
+            ])
             ->add('import_date', DateType::class, [
                 'widget'=>'single_text',
                 'required'=>false
@@ -29,6 +35,10 @@ class ProductFormType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label'=>'Description',
                 'required'=>false
+            ])
+            ->add('cat', EntityType::class, [
+                'class'=>Category::class,
+                'choice_label'=>'id'
             ])
             ->add('file', FileType::class, [
                 'label'=>'Product Image',

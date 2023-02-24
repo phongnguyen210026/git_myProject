@@ -47,8 +47,8 @@
             <div class="container-fluid logo-layout">
                 <div class="logo-box">
                     <img class="me-auto logo" src="../images/My project-1.png" alt="" width="150px" height="100%">
-                    <form action="" class="search-box">
-                        <input type="text" class="search-box_input" required>
+                    <form action="{{path('app_search')}}" class="search-box" method="POST">
+                        <input name="search-content" type="text" class="search-box_input" required>
                         <button class="search-box_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                     <a class="cart-link" href="#"><span class="cart"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
@@ -87,15 +87,9 @@
                             <div class="menu-one">
                                 <ul>
                                     <li><h4>Shop by Category</h4></li>
-                                    <li><a href="{{path('app_product')}}">Shop All Women's</a></li>
-                                    <li><a href="{{path('app_product')}}">Dresses</a></li>
-                                    <li><a href="{{path('app_product')}}">Tops</a></li>
-                                    <li><a href="">Jackets</a></li>
-                                    <li><a href="">Pants</a></li>
-                                    <li><a href="">Skirts</a></li>
-                                    <li><a href="">Jeans</a></li>
-                                    <li><a href="">Shoes</a></li>
-                                    <li><a href="">Vintage</a></li>
+                                    {% for c in catWomen %}
+                                        <li><a href="{{path('app_product',{'cat_id':c.id})}}">{{c.categoryName}}</a></li>
+                                    {% endfor %}
                                 </ul>
                                 <ul>
                                     <li><h4>Brands</h4></li>
@@ -113,15 +107,17 @@
                             <div class="menu-two">
                                 <ul>
                                     <li><h4>Shop by Category</h4></li>
-                                    <li><a href="">Shop All Men's</a></li>
-                                    <li><a href="">Hoodies + Sweatshirts</a></li>
+                                    {% for c in catMen %}
+                                        <li><a href="{{path('app_product',{'cat_id':c.id})}}">{{c.categoryName}}</a></li>
+                                    {% endfor %}
+                                    {# <li><a href="">Hoodies + Sweatshirts</a></li>
                                     <li><a href="">Coats + Jackets</a></li>
                                     <li><a href="">Jeans</a></li>
                                     <li><a href="">Shoes</a></li>
                                     <li><a href="">Underwear + Lounge</a></li>
                                     <li><a href="">Vintage</a></li>
                                     <li><a href="">Hats</a></li>
-                                    <li><a href="">Accessories</a></li>
+                                    <li><a href="">Accessories</a></li> #}
                                 </ul>
                                 <ul>
                                     <li><h4>Brands</h4></li>

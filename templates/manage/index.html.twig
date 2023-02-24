@@ -41,8 +41,8 @@
                               {% for p in product %}
                                 <tr>
                                 <th scope="row">1</th>
-                                <td>{{p.product_name}}</td>
-                                <td>{{p.import_date}}</td>
+                                <td>{{p.productName}}</td>
+                                <td>{{p.importDate|date('Y-m-d H:i:s')}}</td>
                                 <td class="action-row">
                                     <a href="#">Edit</a>
                                     <a href="#">Delete</a></td>

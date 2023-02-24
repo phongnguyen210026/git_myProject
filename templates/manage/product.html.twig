@@ -19,6 +19,11 @@
                         {{ form_widget(form.product_name, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
+                        <label for="product-price" class="form-label">Price</label>
+                        {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
+                        {{ form_widget(form.price, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
                         <label for="created" class="form-label">Created</label>
                         {# <input type="text" class="form-control" id="created" name="created"> #}
                         {{ form_widget(form.import_date, {'attr':{'class':'form-control'}}) }}
@@ -27,6 +32,11 @@
                         <label for="description" class="form-label">Description</label>
                         {# <textarea class="form-control" id="description" rows="5"></textarea> #}
                         {{ form_widget(form.description, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="cat-id" class="form-label">Category ID</label>
+                        {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
+                        {{ form_widget(form.cat) }}
                     </div>
                     <div class="mb-2">
                         <label for="formFile" class="form-label">{{ form_label(form.file) }}</label>

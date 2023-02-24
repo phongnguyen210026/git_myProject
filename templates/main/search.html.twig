@@ -18,11 +18,8 @@
                     <div class="col-md-4 title-page">
                         <h3 class="page-title">Hoodie</h3>
                     </div>
-                    <div class="col-md-4 browse">
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Summer 2017</a></li>
-                        </ul>
+                    <div class="col-md-4 search-result">
+                        <span>Your searched for "{{content}}"</span>
                     </div>
                     <div class="col-md-4">
                         <select name="" id="" class="form-select">
@@ -41,14 +38,14 @@
                         color:#222222;
                     }
                     </style>
-                    {% for product in showProduct %}
+                    {% for r in result %}
                     <div class="col-md-3 col-sm-6 col-6 box-product">
                         <div class="product-box">
-                        {% set img = product.image %}
+                        {% set img = r.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
                             <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
-                            <h2 class="product-title">{{product.productName}}</h2>
-                            <div class="product-price">{{product.price}}</div>
+                            <h2 class="product-title">{{r.productName}}</h2>
+                            <div class="product-price"></div>
                         </div>
                     </div>
                     {% endfor %}

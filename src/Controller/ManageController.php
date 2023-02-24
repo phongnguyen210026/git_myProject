@@ -25,17 +25,23 @@ class ManageController extends AbstractController
     /**
      * @Route("/manage", name="show_manage")
      */
-    public function manageShow(AuthenticationUtils $authenticationUtils): Response
+    public function manageShow(AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
     {
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
         $product = $this->repo->findAll();
         $lastUserName = $authenticationUtils->getLastUsername();
-        return $this->render('manage/index.html.twig', ['last_username'=>$lastUserName, 'product'=>$product]);
+        return $this->render('manage/index.html.twig', ['last_username'=>$lastUserName, 'product'=>$product
+        , 'catMen'=>$catMen, 'catWomen'=>$catWomen
+        ]);
     }
     /**
     * @Route("/add", name="product_insert")
     */
-    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils): Response
+    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
     {   
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
         $p = new Product();
         $form = $this->createForm(ProductFormType::class, $p);
 
@@ -55,7 +61,9 @@ class ManageController extends AbstractController
         $username = $authenticationUtils->getLastUsername();
         return $this->render("manage/product.html.twig",[
             'form' => $form->createView(),
-            'last_username'=>$username
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen
         ]);
     }
 
@@ -123,7 +131,7 @@ class ManageController extends AbstractController
     /**
      * @Route("/addCat", name="category_insert")
      */
-    public function FunctionName(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
+    public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
     {
         $cat = new Category();
         $form = $this->createForm(CategoryFormType::class, $cat);

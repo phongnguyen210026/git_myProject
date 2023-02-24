@@ -30,6 +30,9 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $cat = null;
 
+    #[ORM\Column]
+    private ?float $price = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -83,14 +86,26 @@ class Product
         return $this;
     }
 
-    public function getCat(): ?category
+    public function getCat(): ?Category
     {
         return $this->cat;
     }
 
-    public function setCat(?category $cat): self
+    public function setCat(?Category $cat): self
     {
         $this->cat = $cat;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
