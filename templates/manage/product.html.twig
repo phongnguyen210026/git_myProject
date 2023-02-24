@@ -36,12 +36,17 @@
                     <div class="mb-2">
                         <label for="cat-id" class="form-label">Category ID</label>
                         {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
-                        {{ form_widget(form.cat) }}
+                        {{ form_widget(form.cat, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="cat-id" class="form-label">Category ID</label>
+                        {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
+                        {{ form_widget(form.brand, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
                         <label for="formFile" class="form-label">{{ form_label(form.file) }}</label>
                         {# <input class="form-control" type="file" id="formFile"> #}
-                        {{ form_widget(form.file) }}
+                        {{ form_widget(form.file, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
                     {% set img = form.image.vars.value %}

@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ProductDetail;
+use App\Entity\ProductImage;
+use App\Form\BrandFormType;
 use App\Form\CategoryFormType;
+use App\Form\ImageFormType;
 use App\Form\PDetailFormType;
 use App\Form\ProductFormType;
+use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductDetailRepository;
 use App\Repository\ProductImageRepository;
@@ -179,7 +184,7 @@ class ManageController extends AbstractController
      */
     public function showProductDetail(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductDetailRepository $repo2): Response
     {
-        $pDetail = $repo2->findAll();
+        $pDetail = $repo2->showProductDetail();
         $username = $authenticationUtils->getLastUsername();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
@@ -227,11 +232,65 @@ class ManageController extends AbstractController
      */
     public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2): Response
     {
-        $img = $repo2->findAll();
+        $img = $repo2->showImg();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
         return $this->render('manage/image.html.twig', ['img'=>$img, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
+    }
+    /**
+     * @Route("/addImage", name="image_insert")
+     */
+    public function AddImage(Request $req, ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    {
+        $img = new ProductImage();
+        $form = $this->createForm(ImageFormType::class, $img);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $repo->save($img, true);
+            return $this->redirectToRoute('image_show');
+        }
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        return $this->render('manage/imageForm.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 
+        'form'=>$form->createView()]);
+    }
+
+    // Brand table
+
+    /**
+     * @Route("/brand", name="brand_show")
+     */
+    public function showBrand(CategoryRepository $repo, BrandRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    {
+        $brand = $repo2->findAll();
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/brand.html.twig', ['brand'=>$brand, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
+    }
+    /**
+     * @Route("/addBrand", name="brand_insert")
+     */
+    public function addBrand(Request $req, SluggerInterface $slugger, BrandRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    {
+        $brand = new Brand();
+        $form = $this->createForm(BrandFormType::class, $brand);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $imgFile = $form->get('file')->getData();
+            if ($imgFile) {
+                $newFilename = $this->uploadImage($imgFile,$slugger);
+                $brand->setImage($newFilename);
+            }
+            $repo->save($brand, true);
+            return $this->redirectToRoute('brand_show');
+        }
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/brandForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
     }
 }
 

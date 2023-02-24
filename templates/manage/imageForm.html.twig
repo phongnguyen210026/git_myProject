@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Image | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/formManage.css') }}" />
+    <script type="text/javascript"  src="{{ asset('Js/homepage.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+ {% include 'header.html.twig' %}
+    <section class="form-manage-section">
+            <div class="container">
+                {# <form action="" class="form-edit"> #}
+                {{ form_start(form, {'attr':{'class':'form-edit'}}) }}
+                    <div class="mb-2">
+                        <label for="product-id" class="form-label">Product id</label>
+                        {# <input type="text" class="form-control" id="product-id" name="product-id"> #}
+                        {{ form_widget(form.product, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="formFile" class="form-label">{{ form_label(form.file) }}</label>
+                        {# <input class="form-control" type="file" id="formFile"> #}
+                        {{ form_widget(form.file) }}
+                      </div>
+                    <div class="mb-2">
+                        {# <img src="https://cdn2.iconfinder.com/data/icons/symbol-blue-set-3/100/Untitled-1-94-512.png" alt="" width="30%" height="30%"> #}
+                        {% set img = form.image.vars.value %}
+                        {% if img %}
+                        <img src="{{asset('uploads/'~img)}}" class="w-25 shadow p-3 mb-5 bg-body rounded" />
+                        {% else %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/symbol-blue-set-3/100/Untitled-1-94-512.png" class="w-25 shadow p-3 mb-5 bg-body rounded" />
+                        {% endif %}
+                    </div>
+                    {# <button class="btn btn-info confirm-btn">Confirm</button> #}
+                    {{ form_widget(form.save) }}
+                {# </form> #}
+                {{ form_end(form) }}
+            </div>
+        </section>
+        {% include 'footer.html.twig' %}
+{% endblock %}

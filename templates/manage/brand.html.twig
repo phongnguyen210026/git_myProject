@@ -1,18 +1,16 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Product Detail | Admin{% endblock %}
+{% block title %}Brand | Admin{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/Manage.css') }}" />
 {% endblock %}
-
 {% block body %}
 {% include 'header.html.twig' %}
     <section class="manage-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-12">
+                    <div class="col-lg-2 col-12">
                         <ul class="nav-sidebar">
                             <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
                             <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
@@ -21,33 +19,29 @@
                             <li><a href="{{path('image_show')}}">Image detail</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-9 col-12">
+                    <div class="col-lg-10 col-12">
                         <div class="heading">
                             <h1 class="title-manage-info">
-                                Manage Product Detail
+                                Manage Brand
                             </h1>
-                            <a href="{{path('pDetail_insert')}}"><button class="btn btn-info">Insert</button></a>
+                            <a href="{{path('brand_insert')}}"><button class="btn btn-info">Insert</button></a>
                         </div>
                         <table class="table">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Product name</th>
-                                <th scope="col">Size</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Brand name</th>
+                                <th scope="col">Company</th>
                                 <th>Action</th>
                                 <!-- <th scope="col">Handle</th> -->
                               </tr>
                             </thead>
                             <tbody>
-                            {% for pd in pDetail %}
+                            {% for b in brand %}
                             <tr>
-                                <th scope="row">{{pd.id}}</th>
-                                    <td>{{pd.product_name}}</td>
-                                    <td>{{pd.size}}</td>
-                                    <td>{{pd.stock}}</td>
-                                    <td>{{pd.status}}</td>
+                                <th scope="row">{{b.id}}</th>
+                                <td>{{b.brandName}}</td>
+                                <td>{{b.company}}</td>
                                 <td>
                                     <a href="#">Edit</a>
                                     <a href="#">Delete</a></td>

@@ -39,6 +39,19 @@ class ProductDetailRepository extends ServiceEntityRepository
         }
     }
 
+   /**
+    * @return ProductDetail[] Returns an array of ProductDetail objects
+    */
+   public function showProductDetail(): array
+   {
+       return $this->createQueryBuilder('pd')
+           ->select('pd.id, p.product_name, pd.size, pd.stock, pd.status')
+           ->innerJoin('pd.product', 'p')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
 //    /**
 //     * @return ProductDetail[] Returns an array of ProductDetail objects
 //     */

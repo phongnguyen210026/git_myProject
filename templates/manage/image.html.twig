@@ -1,22 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Category | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
+{% endblock %}
+
 {% block body %}
+{% include 'header.html.twig' %}
     <section class="manage-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-2 col-12">
+                    <div class="col-lg-3 col-12">
                         <ul class="nav-sidebar">
                             <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
                             <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
                             <li><a href="{{path('show_category')}}">Category</a></li>
-                            <li><a href="#">Brand</a></li>
+                            <li><a href="{{path('brand_show')}}">Brand</a></li>
                             <li><a href="{{path('image_show')}}">Image detail</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-10 col-12">
+                    <div class="col-lg-9 col-12">
                         <div class="heading">
                             <h1 class="title-manage-info">
                                 Manage Image Detail
                             </h1>
-                            <a href=""><button class="btn btn-info">Insert</button></a>
+                            <a href="{{path('image_insert')}}"><button class="btn btn-info">Insert</button></a>
                         </div>
                         <table class="table">
                             <thead>
@@ -44,4 +53,5 @@
                 </div>
             </div>
         </section>
+{% include 'footer.html.twig' %}
 {% endblock %}

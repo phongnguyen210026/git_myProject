@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -38,7 +39,11 @@ class ProductFormType extends AbstractType
             ])
             ->add('cat', EntityType::class, [
                 'class'=>Category::class,
-                'choice_label'=>'id'
+                'choice_label'=>'category_name'
+            ])
+            ->add('brand', EntityType::class, [
+                'class'=>Brand::class,
+                'choice_label'=>'brand_name'
             ])
             ->add('file', FileType::class, [
                 'label'=>'Product Image',

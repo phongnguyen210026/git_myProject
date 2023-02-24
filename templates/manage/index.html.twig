@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
 {% endblock %}
+
 {% block body %}
-    {% include 'header.html.twig' %}
+{% include 'header.html.twig' %}
     <section class="manage-section">
             <div class="container">
                 <div class="row">
@@ -16,7 +17,7 @@
                             <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
                             <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
                             <li><a href="{{path('show_category')}}">Category</a></li>
-                            <li><a href="#">Brand</a></li>
+                            <li><a href="{{path('brand_show')}}">Brand</a></li>
                             <li><a href="{{path('image_show')}}">Image detail</a></li>
                         </ul>
                     </div>
