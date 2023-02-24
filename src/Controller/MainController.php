@@ -56,9 +56,10 @@ class MainController extends AbstractController
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
         $findProduct = $repo->findBy(['cat'=>$cat_id]);
+        $findCat = $repo2->findBy(['id'=>$cat_id]);
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('main/product.html.twig', ['last_username'=>$lastUsername, 'showProduct'=>$findProduct, 
-        'catMen'=>$catMen, 'catWomen'=>$catWomen
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'findCat'=>$findCat
         ]);
     }
     /**

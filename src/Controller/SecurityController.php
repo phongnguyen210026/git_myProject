@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,15 @@ class SecurityController extends AbstractController
     /**
      * @Route("/", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
     {
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('security/login.html.twig', ['last_username'=>$lastUsername, 'error'=>$error]);
+        return $this->render('security/login.html.twig', ['last_username'=>$lastUsername, 'error'=>$error,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen
+        ]);
     }
 
     /**

@@ -16,12 +16,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 title-page">
-                        <h3 class="page-title">Hoodie</h3>
+                        {% for cat in findCat %}
+                            <h3 class="page-title">{{cat.categoryName}}</h3>
+                        {% endfor %}
                     </div>
                     <div class="col-md-4 browse">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Summer 2017</a></li>
+                            <li class="breadcrumb-item"><a href="{{path('app_home')}}">Home</a></li>
+                            {% for cat in findCat %}
+                                <li class="breadcrumb-item"><a href="#">{{cat.categoryName}}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="col-md-4">
@@ -48,7 +52,7 @@
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
                             <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
                             <h2 class="product-title">{{product.productName}}</h2>
-                            <div class="product-price">{{product.price}}</div>
+                            <div class="product-price">${{product.price}}</div>
                         </div>
                     </div>
                     {% endfor %}

@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\ProductDetail;
 use App\Form\CategoryFormType;
+use App\Form\PDetailFormType;
 use App\Form\ProductFormType;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductDetailRepository;
+use App\Repository\ProductImageRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +26,9 @@ class ManageController extends AbstractController
     {
         $this->repo = $repo;
     }
+
+    // Product table
+
     /**
      * @Route("/manage", name="show_manage")
      */
@@ -119,14 +126,21 @@ class ManageController extends AbstractController
         $this->repo->remove($p,true);
         return $this->redirectToRoute('product_show', [], Response::HTTP_SEE_OTHER);
     }
+
+    // Category table
+
     /**
      * @Route("/category", name="show_category")
      */
     public function categoryShow(AuthenticationUtils $authenticationUtils, CategoryRepository $cat_repo): Response
     {
         $cat = $cat_repo->findAll();
+        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat]);
+        return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen
+        ]);
     }
     /**
      * @Route("/addCat", name="category_insert")
@@ -142,6 +156,82 @@ class ManageController extends AbstractController
         }
         $username = $authenticationUtils->getLastUsername();
         return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username]);
+    }
+    /**
+     * @Route("/editCat", name="category_edit")
+     */
+    public function editCatAction(): Response
+    {
+        return $this->render('$0.html.twig', []);
+    }
+    /**
+     * @Route("/deleteCat", name="category_delete")
+     */
+    public function deleteCat(): Response
+    {
+        return $this->render('$0.html.twig', []);
+    }
+
+    // Product detail table
+
+    /**
+     * @Route("/productDetail", name="productDetail_show")
+     */
+    public function showProductDetail(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductDetailRepository $repo2): Response
+    {
+        $pDetail = $repo2->findAll();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
+        return $this->render('manage/productDetail.html.twig', ['last_username'=>$username, 'catMen'=>$catMen,
+        'catWomen'=>$catWomen, 'pDetail'=>$pDetail
+        ]);
+    }
+    /**
+     * @Route("/addPDetail", name="pDetail_insert")
+     */
+    public function addProductDetail(Request $req, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo, CategoryRepository $repo2): Response
+    {
+        $pd = new ProductDetail();
+        $form = $this->createForm(PDetailFormType::class, $pd);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $repo->save($pd, true);
+            return $this->redirectToRoute('productDetail_show');
+        }
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/pDetailForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen,
+        'last_username'=>$username
+        ]);
+    }
+    /**
+     * @Route("/editPDetail", name="pDetail_edit")
+     */
+    public function editPDetail(): Response
+    {
+        return $this->render('$0.html.twig', []);
+    }
+    /**
+     * @Route("/deletePDetail", name="pDetail_delete")
+     */
+    public function deletePDetail(): Response
+    {
+        return $this->render('$0.html.twig', []);
+    }
+
+    // Image table
+    /**
+     * @Route("/image", name="image_show")
+     */
+    public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2): Response
+    {
+        $img = $repo2->findAll();
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/image.html.twig', ['img'=>$img, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
     }
 }
 

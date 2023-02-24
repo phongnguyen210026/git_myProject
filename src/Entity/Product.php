@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,18 @@ class Product
 
     #[ORM\Column]
     private ?float $price = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductDetail::class, orphanRemoval: true)]
+    private Collection $productDetails;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, orphanRemoval: true)]
+    private Collection $productImages;
+
+    public function __construct()
+    {
+        $this->productDetails = new ArrayCollection();
+        $this->productImages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +120,66 @@ class Product
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductDetail>
+     */
+    public function getProductDetails(): Collection
+    {
+        return $this->productDetails;
+    }
+
+    public function addProductDetail(ProductDetail $productDetail): self
+    {
+        if (!$this->productDetails->contains($productDetail)) {
+            $this->productDetails->add($productDetail);
+            $productDetail->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductDetail(ProductDetail $productDetail): self
+    {
+        if ($this->productDetails->removeElement($productDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($productDetail->getProduct() === $this) {
+                $productDetail->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductImage>
+     */
+    public function getProductImages(): Collection
+    {
+        return $this->productImages;
+    }
+
+    public function addProductImage(ProductImage $productImage): self
+    {
+        if (!$this->productImages->contains($productImage)) {
+            $this->productImages->add($productImage);
+            $productImage->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductImage(ProductImage $productImage): self
+    {
+        if ($this->productImages->removeElement($productImage)) {
+            // set the owning side to null (unless already changed)
+            if ($productImage->getProduct() === $this) {
+                $productImage->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -45,7 +45,7 @@ class ProductRepository extends ServiceEntityRepository
    public function searchProduct($ps): array
    {
        return $this->createQueryBuilder('p')
-           ->Where('p.product_name like :val')
+           ->Where('p.product_name LIKE :val')
            ->setParameter('val', '%'.$ps.'%')
            ->getQuery()
            ->getArrayResult()

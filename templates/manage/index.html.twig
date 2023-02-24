@@ -14,10 +14,10 @@
                     <div class="col-lg-3 col-12">
                         <ul class="nav-sidebar">
                             <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
-                            <li><a href="#">Product detail</a></li>
+                            <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
                             <li><a href="{{path('show_category')}}">Category</a></li>
                             <li><a href="#">Brand</a></li>
-                            <li><a href="#">Image detail</a></li>
+                            <li><a href="{{path('image_show')}}">Image detail</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-9 col-12">
@@ -40,9 +40,9 @@
                             <tbody>
                               {% for p in product %}
                                 <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">{{p.id}}</th>
                                 <td>{{p.productName}}</td>
-                                <td>{{p.importDate|date('Y-m-d H:i:s')}}</td>
+                                <td>{{p.importDate|date('Y-m-d')}}</td>
                                 <td class="action-row">
                                     <a href="#">Edit</a>
                                     <a href="#">Delete</a></td>
