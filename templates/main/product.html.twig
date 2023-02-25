@@ -16,14 +16,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 title-page">
-                        <h3 class="page-title">Hoodie</h3>
+                        {% for cat in findCat %}
+                            <h3 class="page-title">{{cat.categoryName}}</h3>
+                        {% endfor %}
                     </div>
                     <div class="col-md-4 browse">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Photos</a></li>
-                            <li class="breadcrumb-item"><a href="#">Summer 2017</a></li>
-                            <li class="breadcrumb-item"><a href="#">Italy</a></li>
-                            <li class="breadcrumb-item active">Rome</li>
+                            <li class="breadcrumb-item"><a href="{{path('app_home')}}">Home</a></li>
+                            {% for cat in findCat %}
+                                <li class="breadcrumb-item"><a href="#">{{cat.categoryName}}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="col-md-4">
@@ -35,70 +37,25 @@
                             <option value="best-selling">Best Sellers</option>
                         </select>
                     </div>
+                    <style>
+                    .product-detail-link{
+                        color:#222222;
+                    }
+                    .product_detail-link:hover{
+                        color:#222222;
+                    }
+                    </style>
+                    {% for product in showProduct %}
                     <div class="col-md-3 col-sm-6 col-6 box-product">
                         <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
+                        {% set img = product.image %}
+                            <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
+                            <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
+                            <h2 class="product-title">{{product.productName}}</h2>
+                            <div class="product-price">${{product.price}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-6 box-product">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>

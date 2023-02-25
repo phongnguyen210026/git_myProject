@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/formManage.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="form-manage-section">
+            <div class="container">
+                {# <form action="" class="form-edit"> #}
+                {{ form_start(form, {'attr':{'class':'form-edit'}}) }}
+                    <div class="mb-2">
+                        <label for="product-id" class="form-label">Product id</label>
+                        {# <input type="text" class="form-control" id="product-id" name="product-id"> #}
+                        {{ form_widget(form.product, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        {# <select class="form-select" aria-label="Default select example">
+                            <option selected>Size</option>
+                            <option value="1">XXL</option>
+                            <option value="2">XL</option>
+                            <option value="3">L</option>
+                            <option value="3">M</option>
+                            <option value="3">S</option>
+                        </select> #}
+                        {{ form_widget(form.size) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="stock" class="form-label">Stock</label>
+                        {# <input type="text" class="form-control" id="price" name="stock"> #}
+                        {{ form_widget(form.stock, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="form-check mb-2">
+                        {# <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Available
+                        </label> #}
+                        {{ form_widget(form.status) }}
+                    </div>
+                    {# <button class="btn btn-info confirm-btn">Confirm</button> #}
+                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info'}}) }}
+                {# </form> #}
+                {{ form_end(form) }}
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

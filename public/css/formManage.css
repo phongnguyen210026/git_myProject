@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.form-edit{
+    width: 70%;
+    margin: auto;
+}
+.form-manage-section{
+    margin-top: 5em;
+    padding-bottom: 5em;
+}
+.confirm-btn{
+    background: #F4EECE;
+    border: solid 1px #F4EECE;
+}
+.confirm-btn:hover{
+    background: #ffffff;
+    border: solid 1px #F4EECE;
+}

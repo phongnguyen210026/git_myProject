@@ -39,6 +39,24 @@ class ProductImageRepository extends ServiceEntityRepository
         }
     }
 
+
+   /**
+    * @return ProductImage[] Returns an array of ProductImage objects
+    */
+   public function showImg($img): array
+   {
+       return $this->createQueryBuilder('pi')
+           ->select('pi.id, p.product_name')
+           ->innerJoin('pi.', '')
+           ->Where('p.exampleField = :val')
+           ->setParameter('val', $img)
+           ->orderBy('p.id', 'ASC')
+           ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    /**
 //     * @return ProductImage[] Returns an array of ProductImage objects
 //     */

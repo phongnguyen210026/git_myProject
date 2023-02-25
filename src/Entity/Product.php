@@ -19,41 +19,35 @@ class Product
     #[ORM\Column(length: 1000)]
     private ?string $product_name = null;
 
-    #[ORM\Column]
-    private ?int $stock = null;
-
-    #[ORM\Column]
-    private ?float $product_price = null;
-
-    #[ORM\Column]
-    private ?bool $product_status = null;
-
-    #[ORM\Column(length: 5)]
-    private ?string $size = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $import_date = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $import_date = null;
-
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderDetail::class, orphanRemoval: true)]
-    private Collection $product_orderDetail;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?category $cat = null;
+    private ?Category $cat = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?brand $brand = null;
+    #[ORM\Column]
+    private ?float $price = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductDetail::class, orphanRemoval: true)]
+    private Collection $productDetails;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, orphanRemoval: true)]
     private Collection $productImages;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Brand $brand = null;
+
     public function __construct()
     {
-        $this->product_orderDetail = new ArrayCollection();
+        $this->productDetails = new ArrayCollection();
         $this->productImages = new ArrayCollection();
     }
 
@@ -74,50 +68,14 @@ class Product
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getImportDate(): ?\DateTimeInterface
     {
-        return $this->stock;
+        return $this->import_date;
     }
 
-    public function setStock(int $stock): self
+    public function setImportDate(\DateTimeInterface $import_date=null): self
     {
-        $this->stock = $stock;
-
-        return $this;
-    }
-
-    public function getProductPrice(): ?float
-    {
-        return $this->product_price;
-    }
-
-    public function setProductPrice(float $product_price): self
-    {
-        $this->product_price = $product_price;
-
-        return $this;
-    }
-
-    public function isProductStatus(): ?bool
-    {
-        return $this->product_status;
-    }
-
-    public function setProductStatus(bool $product_status): self
-    {
-        $this->product_status = $product_status;
-
-        return $this;
-    }
-
-    public function getSize(): ?string
-    {
-        return $this->size;
-    }
-
-    public function setSize(string $size): self
-    {
-        $this->size = $size;
+        $this->import_date = $import_date;
 
         return $this;
     }
@@ -134,68 +92,68 @@ class Product
         return $this;
     }
 
-    public function getImportDate(): ?\DateTimeInterface
+    public function getImage(): ?string
     {
-        return $this->import_date;
+        return $this->image;
     }
 
-    public function setImportDate(\DateTimeInterface $import_date): self
+    public function setImage(?string $image=null): self
     {
-        $this->import_date = $import_date;
+        $this->image = $image;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, OrderDetail>
-     */
-    public function getProductOrderDetail(): Collection
-    {
-        return $this->product_orderDetail;
-    }
-
-    public function addProductOrderDetail(OrderDetail $productOrderDetail): self
-    {
-        if (!$this->product_orderDetail->contains($productOrderDetail)) {
-            $this->product_orderDetail->add($productOrderDetail);
-            $productOrderDetail->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductOrderDetail(OrderDetail $productOrderDetail): self
-    {
-        if ($this->product_orderDetail->removeElement($productOrderDetail)) {
-            // set the owning side to null (unless already changed)
-            if ($productOrderDetail->getProduct() === $this) {
-                $productOrderDetail->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getCat(): ?category
+    public function getCat(): ?Category
     {
         return $this->cat;
     }
 
-    public function setCat(?category $cat): self
+    public function setCat(?Category $cat): self
     {
         $this->cat = $cat;
 
         return $this;
     }
 
-    public function getBrand(): ?brand
+    public function getPrice(): ?float
     {
-        return $this->brand;
+        return $this->price;
     }
 
-    public function setBrand(?brand $brand): self
+    public function setPrice(float $price): self
     {
-        $this->brand = $brand;
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductDetail>
+     */
+    public function getProductDetails(): Collection
+    {
+        return $this->productDetails;
+    }
+
+    public function addProductDetail(ProductDetail $productDetail): self
+    {
+        if (!$this->productDetails->contains($productDetail)) {
+            $this->productDetails->add($productDetail);
+            $productDetail->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductDetail(ProductDetail $productDetail): self
+    {
+        if ($this->productDetails->removeElement($productDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($productDetail->getProduct() === $this) {
+                $productDetail->setProduct(null);
+            }
+        }
 
         return $this;
     }
@@ -226,6 +184,18 @@ class Product
                 $productImage->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): self
+    {
+        $this->brand = $brand;
 
         return $this;
     }

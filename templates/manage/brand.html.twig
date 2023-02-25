@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Brand | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/Manage.css') }}" />
+{% endblock %}
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="manage-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2 col-12">
+                        <ul class="nav-sidebar">
+                            <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
+                            <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
+                            <li><a href="{{path('show_category')}}">Category</a></li>
+                            <li><a href="{{path('brand_show')}}">Brand</a></li>
+                            <li><a href="{{path('image_show')}}">Image detail</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-10 col-12">
+                        <div class="heading">
+                            <h1 class="title-manage-info">
+                                Manage Brand
+                            </h1>
+                            <a href="{{path('brand_insert')}}"><button class="btn btn-info">Insert</button></a>
+                        </div>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Brand name</th>
+                                <th scope="col">Company</th>
+                                <th>Action</th>
+                                <!-- <th scope="col">Handle</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for b in brand %}
+                            <tr>
+                                <th scope="row">{{b.id}}</th>
+                                <td>{{b.brandName}}</td>
+                                <td>{{b.company}}</td>
+                                <td>
+                                    <a href="#">Edit</a>
+                                    <a href="#">Delete</a></td>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

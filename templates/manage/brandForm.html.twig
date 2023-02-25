@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block title %}Brand | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/formManage.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="form-manage-section">
+            <div class="container">
+                {# <form action="" class="form-edit"> #}
+                {{ form_start(form, {'attr':{'class':'form-edit'}}) }}
+                    <div class="mb-2">
+                        <label for="brand-name" class="form-label">Brand name</label>
+                        {# <input type="text" class="form-control" id="brand-name" name="brand-name"> #}
+                        {{ form_widget(form.brand_name, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="brand-name" class="form-label">Company</label>
+                        {# <input type="text" class="form-control" id="brand-name" name="brand-name"> #}
+                        {{ form_widget(form.company, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="formFile" class="form-label">Add image</label>
+                        {# <input class="form-control" type="file" id="formFile"> #}
+                        {{ form_widget(form.file, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        {# <img src="https://cdn2.iconfinder.com/data/icons/symbol-blue-set-3/100/Untitled-1-94-512.png" alt="" width="30%" height="30%"> #}
+                        {% set img = form.image.vars.value %}
+                        {% if img %}
+                        <img src="{{asset('uploads/'~img)}}" class="w-25 shadow p-3 mb-5 bg-body rounded" />
+                        {% else %}
+                        <img src="https://cdn2.iconfinder.com/data/icons/symbol-blue-set-3/100/Untitled-1-94-512.png" class="w-25 shadow p-3 mb-5 bg-body rounded" />
+                        {% endif %}
+                    </div>
+                    {# <button class="btn btn-info confirm-btn">Confirm</button> #}
+                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info confirm-btn'}}) }}
+                {# </form> #}
+                {{ form_end(form) }}
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product | Shopinist{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="pb-5 product-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 title-page">
+                        <h3 class="page-title">Hoodie</h3>
+                    </div>
+                    <div class="col-md-4 search-result">
+                        <span>Your searched for "{{content}}"</span>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="" id="" class="form-select">
+                            <option value="">Featured</option>
+                            <option value="descending">Price: High to Low</option>
+                            <option value="ascending">Price: Low to High</option>
+                            <option value="newest">Newest</option>
+                            <option value="best-selling">Best Sellers</option>
+                        </select>
+                    </div>
+                    <style>
+                    .product-detail-link{
+                        color:#222222;
+                    }
+                    .product_detail-link:hover{
+                        color:#222222;
+                    }
+                    </style>
+                    {% for r in result %}
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                        {% set img = r.image %}
+                            <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
+                            <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
+                            <h2 class="product-title">{{r.product_name}}</h2>
+                            <div class="product-price"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

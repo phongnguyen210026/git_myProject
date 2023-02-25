@@ -16,14 +16,14 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1000)]
+    #[ORM\Column(length: 500)]
     private ?string $category_name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $parent_category = null;
+    private ?string $category_parent = null;
 
     #[ORM\OneToMany(mappedBy: 'cat', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
@@ -62,14 +62,14 @@ class Category
         return $this;
     }
 
-    public function getParentCategory(): ?string
+    public function getCategoryParent(): ?string
     {
-        return $this->parent_category;
+        return $this->category_parent;
     }
 
-    public function setParentCategory(string $parent_category): self
+    public function setCategoryParent(string $category_parent): self
     {
-        $this->parent_category = $parent_category;
+        $this->category_parent = $category_parent;
 
         return $this;
     }

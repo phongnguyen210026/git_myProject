@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/manage.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="manage-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12">
+                        <ul class="nav-sidebar">
+                            <li class="active"><a href="{{path('show_manage')}}">Product</a></li>
+                            <li><a href="{{path('productDetail_show')}}">Product detail</a></li>
+                            <li><a href="{{path('show_category')}}">Category</a></li>
+                            <li><a href="{{path('brand_show')}}">Brand</a></li>
+                            <li><a href="{{path('image_show')}}">Image detail</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 col-12">
+                        <div class="heading">
+                            <h1 class="title-manage-info">
+                                Manage Product
+                            </h1>
+                            <a class="insert-link" href="{{path('product_insert')}}"><button class="btn btn-info">Insert</button></a>
+                        </div>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product name</th>
+                                <th scope="col">Created</th>
+                                <th>Action</th>
+                                <!-- <th scope="col">Handle</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for p in product %}
+                                <tr>
+                                <th scope="row">{{p.id}}</th>
+                                <td>{{p.productName}}</td>
+                                <td>{{p.importDate|date('Y-m-d')}}</td>
+                                <td class="action-row">
+                                    <a href="#">Edit</a>
+                                    <a href="#">Delete</a></td>
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% include 'footer.html.twig' %}
+{% endblock %}

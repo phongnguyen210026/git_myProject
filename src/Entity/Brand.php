@@ -19,10 +19,13 @@ class Brand
     private ?string $brand_name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $brand_image = null;
+    private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'brand', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
+
+    #[ORM\Column(length: 1000)]
+    private ?string $Company = null;
 
     public function __construct()
     {
@@ -46,14 +49,14 @@ class Brand
         return $this;
     }
 
-    public function getBrandImage(): ?string
+    public function getImage(): ?string
     {
-        return $this->brand_image;
+        return $this->image;
     }
 
-    public function setBrandImage(?string $brand_image): self
+    public function setImage(?string $image=null): self
     {
-        $this->brand_image = $brand_image;
+        $this->image = $image;
 
         return $this;
     }
@@ -84,6 +87,18 @@ class Brand
                 $product->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->Company;
+    }
+
+    public function setCompany(string $Company): self
+    {
+        $this->Company = $Company;
 
         return $this;
     }

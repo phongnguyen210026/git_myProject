@@ -13,12 +13,12 @@ class ProductImage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?product $product = null;
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
@@ -30,19 +30,19 @@ class ProductImage
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image=null): self
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getProduct(): ?product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?product $product): self
+    public function setProduct(?Product $product): self
     {
         $this->product = $product;
 

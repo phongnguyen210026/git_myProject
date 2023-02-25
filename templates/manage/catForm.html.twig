@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Category | Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/formManage.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="form-manage-section">
+            <div class="container">
+                {# <form action="" class="form-edit"> #}
+                {{ form_start(form, {'attr':{'class':'form-edit'}}) }}
+                    <div class="mb-2">
+                        <label for="category-name" class="form-label">Category name</label>
+                        {# <input type="text" class="form-control" id="category-name" name="category-name"> #}
+                        {{ form_widget(form.category_name, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="mb-2">
+                        <label for="description" class="form-label">Description</label>
+                        {# <textarea class="form-control" id="description" rows="5"></textarea> #}
+                        {{ form_widget(form.description, {'attr':{'class':'form-control'}}) }}
+                    </div>
+                    <div class="form-check mb-2">
+                        {# <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        {{ form_widget(form.category_parent, {'attr':{'class':'form-check-input'}}) }}
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Men
+                        </label> #}
+                        {{ form_widget(form.category_parent) }}
+                    </div>
+                    
+                    {# <button class="btn btn-info confirm-btn">Confirm</button> #}
+                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info'}}) }}
+                {# </form> #}
+                {{ form_end(form) }}
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}
