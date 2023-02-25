@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Form\UserUpdateType;
 use App\Repository\CategoryRepository;
+use App\Repository\DetailRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,9 +67,18 @@ class MainController extends AbstractController
     /**
      * @Route("/detail/{id}", name="app_detail")
      */
-    public function showDetail(AuthenticationUtils $authenticationUtils, $id,CategoryRepository $repo2): Response
+    public function showDetail(AuthenticationUtils $authenticationUtils, $id,ProductRepository $repo,CategoryRepository $repo2, DetailRepository $repo3): Response
     {
-        return $this->render('$0.html.twig', []);
+        $catWomen=$repo2->findBy(['category_parent'=>'women']);
+        $catMen=$repo2->findBy(['category_parent'=>'men']);
+        $lastUsername = $authenticationUtils->getLastUsername();
+        $findDetail= $repo3->findBy(['id'=>$id]);
+        $findProduct = $repo->findBy(['cat'=>$id]);
+        $findCat = $repo2->findBy(['id'=>$id]);
+
+
+        return $this->render('main/detail.html.twig', ['last_username'=>$lastUsername, 'showProduct'=>$findProduct, 
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'findCat'=>$findCat, 'findDetail'=>$findDetail]);
     }
 
 

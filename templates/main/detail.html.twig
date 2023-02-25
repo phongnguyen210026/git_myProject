@@ -3,12 +3,12 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
-   
+    <link rel="stylesheet" href="{{asset('css/detail.css')}}"
 {% endblock %}
 
 {% block body %}
 {% include 'header.html.twig' %}
-     <section id="featured" class="container sproduct">
+     <section id="featured" class="container sproduct py-2">
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-12">
                 <img class="img-fluid pb-1 w-100 h-75" id="MainImg" src="../img/Men's_fashion1.jpg" alt="">
@@ -22,8 +22,24 @@
                     </ol>
                   </nav>          
                 <hr>
-                <h3 class="py-4 px-4">Men's Fashion</h3>
+                <h3 class="py-2 px-4">Men's Fashion</h3>
                 <div class="px-5">
+                    {% for cat in findCat %}
+                        <h3 class="">{{cat.categoryName}}</h3>
+                    {% endfor %}
+
+                    {% for d in findDetail %}
+                        <h3 class="">{{d.size}}</h3>
+                    {% endfor %}
+                    {% for d in findDetail %}
+                        <h3 class="">{{d.stock}}</h3>
+                    {% endfor %}
+                    {% for d in findDetail %}
+                        <h3 class="">{{d.status}}</h3>
+                    {% endfor %}
+                    {% for p in showProduct %}
+                        <h3 class="">{{p.productNam}}</h3>
+                    {% endfor %}
                     <h2>$132.00</h2>
                     <h5>Status: available</h5>
                     <select class="my-3">
