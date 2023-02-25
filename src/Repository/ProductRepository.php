@@ -52,6 +52,7 @@ class ProductRepository extends ServiceEntityRepository
        ;
    }
 
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

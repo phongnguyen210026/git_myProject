@@ -45,10 +45,14 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Brand $brand = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Cart::class, orphanRemoval: true)]
+    private Collection $carts;
+
     public function __construct()
     {
         $this->productDetails = new ArrayCollection();
         $this->productImages = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +200,36 @@ class Product
     public function setBrand(?Brand $brand): self
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getProduct() === $this) {
+                $cart->setProduct(null);
+            }
+        }
 
         return $this;
     }

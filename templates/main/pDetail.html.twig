@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+{% block title %}Detail | Shopinist{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/pDetail.css') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+     <section id="featured" class="container sproduct">
+        <div class="row mt-5">
+            <div class="col-lg-6 col-md-12 col-12">
+            {% for show in showDetail %}
+                {% set img = show.image %}
+                <img class="img-fluid pb-1 w-100 h-75" id="MainImg" src="{{asset('uploads/'~img)}}" alt="">
+            {% endfor %}
+            </div> 
+            <div class="col-lg-6 col-md-12 col-12 px-5">
+                <nav aria-label="breadcrumb " >
+                    <ol class="breadcrumb d-flex justify-content-center">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      {% for cName in catName %}
+                        <li class="breadcrumb-item"><a href="#">{{cName.category_name}}</a></li>
+                      {% endfor %}
+                    </ol>
+                  </nav>          
+                <hr>
+                {% for show in showDetail %}
+                    <h3 class="py-4 px-4">{{show.productName}}</h3>
+                    <div class="px-5">
+                    <h2>${{show.price}}</h2>
+                {% endfor %}
+                    {% for g in getProductDetail %}
+                        {% if g.status == 1 %}
+                            <h5>Status: Available</h5>
+                        {% endif %}
+                        {% if g.status == 0 %}
+                             <h5>Status: Unavailable</h5>
+                       
+                        {% endif %}    
+                    {% endfor %}
+                {% for g in getProductDetail %}
+                    <form action="{{path('add_cart', {'id':g.id})}}">
+                {% endfor %}
+                    <select name="size" class="my-3">
+                        <option>Select Size</option>
+                        {% for g in getProductDetail %}
+                            <option value="{{g.size}}">{{g.size}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="number">
+                        
+                        <i id="sub" class="bi bi-dash-circle-dotted minus"></i>
+                        <input id="qtyBox" class="input" type="text" value="1" name="quantity"/>
+                        <i id="add" class="bi bi-plus-circle-dotted plus"></i>
+
+                    </div>
+                   
+                    <h4 class="mt-4 ">Description</h4>
+                    <span>It is very beautifull</span>
+
+
+
+                    <div class="pt-5">
+                        <input type="submit" style="border-radius: 12%; border-width: 2px; 
+                        border-color: rgb(0, 0, 0);" class="btnDetail btn btn-white" value="Add to Cart">
+                        <input type="submit" style="border-radius: 12%; border-width: 2px; 
+                        border-color: rgb(0, 0, 0);" class="btnDetail btn btn-white" value="Back to shopping">
+                    </div>
+                </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% include 'footer.html.twig' %}
+<script type="text/javascript">
+        let addBtn= document.querySelector('#add');
+        let subBtn= document.querySelector('#sub');
+        let qty= document.querySelector('#qtyBox');
+        addBtn.addEventListener('click',()=>{
+            qty.value = parseInt(qty.value) + 1;
+        });
+
+        subBtn.addEventListener('click',()=>{
+            if(qty.value<=1){
+                qty.value=1;
+            }
+            else{
+                qty.value = parseInt(qty.value) -1;
+            }
+        });
+        </script>
+{% endblock %}

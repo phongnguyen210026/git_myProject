@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\Category;
+use App\Entity\Product;
 use App\Entity\User;
 use App\Form\UserUpdateType;
+use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductDetailRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,5 +79,47 @@ class MainController extends AbstractController
         return $this->render('main/search.html.twig', ['last_username'=>$username, 'result'=>$searchResult
         , 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'content'=>$param
         ]);
+    }
+    /**
+     * @Route("/showDetail/{id}", name="show_detail")
+     */
+    public function showProductDetail($id, CategoryRepository $repo2, ProductRepository $repo, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3): Response
+    {
+        $showDetail = $repo->findBy(['id'=>$id]);
+        $catName = $repo2->getCatName($id);
+        $getProductDetail = $repo3->findBy(['id'=>$id]);
+
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('main/pDetail.html.twig', ['showDetail'=>$showDetail, 'catMen'=>$catMen, 'catWomen'=>$catWomen,
+        'last_username'=>$username, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail
+        ]);
+    }
+    /**
+     * @Route("/addCart{id}", name="add_cart")
+     */
+    public function addCartAction(Request $req, $id, CartRepository $repo, CategoryRepository $repo2, ProductRepository $repo3, ProductDetailRepository $repo4, UserRepository $repo5): Response
+    {
+        $cart = new Cart();
+        $user = $this->getUser();
+
+        $getUserId = $repo5->findOneBy(['id'=>$user]);
+        $size = $req->query->get('size');
+        $quantity = $req->query->get('quantity');
+        $proId = $repo3->find($id);
+        settype($size, "string");
+
+        $cart->setUser($getUserId);
+        $cart->setSize($size);
+        $cart->setProductCount($quantity);
+        $cart->setProduct($proId);
+        
+        $repo->save($cart,true);
+        return $this->json('ok');
+
+        // return $this->render('$0.html.twig', []);
+        // return new Response("$size, $quantity");
+        // return $this->json($cart->getProduct());
     }
 }

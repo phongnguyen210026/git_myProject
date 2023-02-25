@@ -50,7 +50,7 @@
                         <div class="product-box">
                         {% set img = product.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
-                            <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
+                            <a class="product-detail-link" href="{{path('show_detail', {'id':product.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
                             <h2 class="product-title">{{product.productName}}</h2>
                             <div class="product-price">${{product.price}}</div>
                         </div>

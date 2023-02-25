@@ -39,6 +39,21 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
+   /**
+    * @return Category[] Returns an array of Category objects
+    */
+   public function getCatName($value): array
+   {
+       return $this->createQueryBuilder('c')
+           ->select('c.category_name')
+           ->innerJoin('c.products', 'p')
+           ->Where('p.id = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
