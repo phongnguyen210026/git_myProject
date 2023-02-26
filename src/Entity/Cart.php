@@ -17,8 +17,16 @@ class Cart
     #[ORM\Column]
     private ?int $product_count = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\OneToOne(inversedBy: 'cart')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $size = null;
 
     public function getId(): ?int
     {
@@ -37,14 +45,38 @@ class Cart
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getUser(): ?User
     {
-        return $this->date;
+        return $this->user;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setUser(User $user): self
     {
-        $this->date = $date;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(string $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }

@@ -91,8 +91,8 @@ class ManageController extends AbstractController
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
 
-            if($p->getCreated()===null){
-                $p->setCreated(new \DateTime());
+            if($p->getImportDate()===null){
+                $p->setImportDate(new \DateTime());
             }
             $imgFile = $form->get('file')->getData();
             if ($imgFile) {
@@ -100,7 +100,7 @@ class ManageController extends AbstractController
                 $p->setImage($newFilename);
             }
             $this->repo->save($p,true);
-            return $this->redirectToRoute('product_show', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('show_manage', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render("product/form.html.twig",[ 
             'form' => $form->createView()
@@ -129,7 +129,7 @@ class ManageController extends AbstractController
     public function deleteAction(Request $request, Product $p): Response
     {
         $this->repo->remove($p,true);
-        return $this->redirectToRoute('product_show', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(' ', [], Response::HTTP_SEE_OTHER);
     }
 
     // Category table
@@ -152,6 +152,8 @@ class ManageController extends AbstractController
      */
     public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
     {
+        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
         $cat = new Category();
         $form = $this->createForm(CategoryFormType::class, $cat);
         $form->handleRequest($req);
@@ -160,7 +162,8 @@ class ManageController extends AbstractController
             return $this->redirectToRoute('show_category');
         }
         $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username]);
+        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username
+        , 'catWomen'=>$catWomen, 'catMen'=>$catMen]);
     }
     /**
      * @Route("/editCat", name="category_edit")
@@ -232,7 +235,7 @@ class ManageController extends AbstractController
      */
     public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2): Response
     {
-        $img = $repo2->showImg();
+        $img = $repo2->findAll();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
@@ -292,5 +295,11 @@ class ManageController extends AbstractController
         $username = $authenticationUtils->getLastUsername();
         return $this->render('manage/brandForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
     }
+
+
+
+
+
+    
 }
 

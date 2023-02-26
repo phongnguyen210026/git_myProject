@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\Category;
+use App\Entity\Product;
 use App\Entity\User;
 use App\Form\UserUpdateType;
+use App\Repository\BrandRepository;
+use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
-use App\Repository\DetailRepository;
+use App\Repository\ProductDetailRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,13 +24,21 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="app_home")
      */
-    public function home(Request $req, AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
+    public function home(Request $req,BrandRepository $repo2, AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
     {
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $brand= $repo2->findAll();
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('main/index.html.twig', ['last_username'=>$lastUsername, 'catMen'=>$catMen, 'catWomen'=>$catWomen]);
+        return $this->render('main/index.html.twig', ['last_username'=>$lastUsername,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand
+        
+        ]);
     }
+
+
+
+
     /**
      * @Route("/account", name="app_account")
      */
@@ -64,22 +76,25 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/detail/{id}", name="app_detail")
-     */
-    public function showDetail(AuthenticationUtils $authenticationUtils, $id,ProductRepository $repo,CategoryRepository $repo2, DetailRepository $repo3): Response
-    {
-        $catWomen=$repo2->findBy(['category_parent'=>'women']);
-        $catMen=$repo2->findBy(['category_parent'=>'men']);
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $findDetail= $repo3->findBy(['id'=>$id]);
-        $findProduct = $repo->findBy(['cat'=>$id]);
-        $findCat = $repo2->findBy(['id'=>$id]);
 
 
-        return $this->render('main/detail.html.twig', ['last_username'=>$lastUsername, 'showProduct'=>$findProduct, 
-        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'findCat'=>$findCat, 'findDetail'=>$findDetail]);
-    }
+
+    // /**
+    //  * @Route("/product{id}", name="showProductWomen")
+    //  */
+    // public function showProductWomen($id,BrandRepository $repo3, AuthenticationUtils $authenticationUtils, ProductRepository $repo, CategoryRepository $repo2): Response
+    // {
+    //     $catWomen = $repo2->findBy(['category_parent'=>'women']);
+    //     $catMen = $repo2->findBy(['category_parent'=>'men']);
+    //     $product =$repo->findBy(['id'=> $id]);
+    //     $brand=$repo3->findAll();
+    //     $findBrand=$repo3->findBy(['brandid'=>$id]);
+    //     $lastUsername = $authenticationUtils->getLastUsername();
+    //     return $this->render('main/product.html.twig', [
+    //         'last_username'=>$lastUsername, 'showProduct'=>$product, 
+    //     'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 'findBrand'=>$findBrand
+    //     ]);
+    // }
 
 
 
@@ -98,4 +113,51 @@ class MainController extends AbstractController
         , 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'content'=>$param
         ]);
     }
+    /**
+     * @Route("/showDetail/{id}", name="show_detail")
+     */
+    public function showProductDetail($id, CategoryRepository $repo2, ProductRepository $repo, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3): Response
+    {
+        $showDetail = $repo->findBy(['id'=>$id]);
+        $catName = $repo2->getCatName($id);
+        $getProductDetail = $repo3->findBy(['id'=>$id]);
+
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('main/pDetail.html.twig', ['showDetail'=>$showDetail, 'catMen'=>$catMen, 'catWomen'=>$catWomen,
+        'last_username'=>$username, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail
+        ]);
+    }
+    /**
+     * @Route("/addCart{id}", name="add_cart")
+     */
+    public function addCartAction(Request $req, $id, CartRepository $repo, CategoryRepository $repo2, ProductRepository $repo3, ProductDetailRepository $repo4, UserRepository $repo5): Response
+    {
+        $cart = new Cart();
+        $user = $this->getUser();
+
+        $getUserId = $repo5->findOneBy(['id'=>$user]);
+        $size = $req->query->get('size');
+        $quantity = $req->query->get('quantity');
+        $proId = $repo3->find($id);
+        settype($size, "string");
+
+        $cart->setUser($getUserId);
+        $cart->setSize($size);
+        $cart->setProductCount($quantity);
+        $cart->setProduct($proId);
+        
+        $repo->save($cart,true);
+        return $this->json('ok');
+
+        // return $this->render('$0.html.twig', []);
+        // return new Response("$size, $quantity");
+        // return $this->json($cart->getProduct());
+    }
+
+
+
+
+
 }

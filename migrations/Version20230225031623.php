@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230225015049 extends AbstractMigration
+final class Version20230225031623 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,12 @@ final class Version20230225015049 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE detail ADD CONSTRAINT FK_2E067F934584665A FOREIGN KEY (product_id) REFERENCES product (id)');
-        $this->addSql('CREATE INDEX IDX_2E067F934584665A ON detail (product_id)');
+        $this->addSql('ALTER TABLE cart ADD size VARCHAR(10) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE detail DROP FOREIGN KEY FK_2E067F934584665A');
-        $this->addSql('DROP INDEX IDX_2E067F934584665A ON detail');
+        $this->addSql('ALTER TABLE cart DROP size');
     }
 }

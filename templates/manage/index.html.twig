@@ -45,8 +45,8 @@
                                 <td>{{p.productName}}</td>
                                 <td>{{p.importDate|date('Y-m-d')}}</td>
                                 <td class="action-row">
-                                    <a href="#">Edit</a>
-                                    <a href="#">Delete</a></td>
+                                    <a href="{{path('product_edit',{'id':p.id})}}">Edit</a>
+                                    <a href="{{path('product_delete',{'id':p.id})}}">Delete</a></td>
                                 </td>
                               </tr>
                               {% endfor %}

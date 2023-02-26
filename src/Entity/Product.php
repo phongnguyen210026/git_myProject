@@ -45,14 +45,14 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Brand $brand = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Detail::class)]
-    private Collection $details;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Cart::class, orphanRemoval: true)]
+    private Collection $carts;
 
     public function __construct()
     {
         $this->productDetails = new ArrayCollection();
         $this->productImages = new ArrayCollection();
-        $this->details = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -205,29 +205,29 @@ class Product
     }
 
     /**
-     * @return Collection<int, Detail>
+     * @return Collection<int, Cart>
      */
-    public function getDetails(): Collection
+    public function getCarts(): Collection
     {
-        return $this->details;
+        return $this->carts;
     }
 
-    public function addDetail(Detail $detail): self
+    public function addCart(Cart $cart): self
     {
-        if (!$this->details->contains($detail)) {
-            $this->details->add($detail);
-            $detail->setProduct($this);
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeDetail(Detail $detail): self
+    public function removeCart(Cart $cart): self
     {
-        if ($this->details->removeElement($detail)) {
+        if ($this->carts->removeElement($cart)) {
             // set the owning side to null (unless already changed)
-            if ($detail->getProduct() === $this) {
-                $detail->setProduct(null);
+            if ($cart->getProduct() === $this) {
+                $cart->setProduct(null);
             }
         }
 
