@@ -235,7 +235,7 @@ class ManageController extends AbstractController
      */
     public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2): Response
     {
-        $img = $repo2->findAll();
+        $img = $repo2->showImg();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
