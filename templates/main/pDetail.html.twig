@@ -8,7 +8,18 @@
 
 {% block body %}
 {% include 'header.html.twig' %}
-     <section id="featured" class="container sproduct">
+    <section id="featured" class="container sproduct">
+        {% if message != 0 %}
+        <style>
+            .alert-danger{
+                z-index: 2;
+            }
+        </style>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-12">
             {% for show in showDetail %}
@@ -91,5 +102,5 @@
                 qty.value = parseInt(qty.value) -1;
             }
         });
-        </script>
+</script>
 {% endblock %}

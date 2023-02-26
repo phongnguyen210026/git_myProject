@@ -39,6 +39,76 @@ class CartRepository extends ServiceEntityRepository
         }
     }
 
+   /**
+    * @return Cart[] Returns an array of Cart objects
+    */
+   public function checkProductInCart($user_id, $p_id): array
+   {
+       return $this->createQueryBuilder('c')
+           ->where('c.user = :value')
+           ->setParameter('value', $user_id)
+           ->andWhere('c.product = :val')
+           ->setParameter('val', $p_id)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Cart[] Returns an array of Cart objects
+    */
+   public function findProductCount($user_id, $p_id): array
+   {
+       return $this->createQueryBuilder('c')
+           ->select('c.product_count')
+           ->where('c.user = :value')
+           ->setParameter('value', $user_id)
+           ->andWhere('c.product = :val')
+           ->setParameter('val', $p_id)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Cart[] Returns an array of Cart objects
+    */
+   public function findProductInCart(): array
+   {
+       return $this->createQueryBuilder('c')
+           ->select('c.id, c.product_count, c.size, p.product_name, p.image, (p.price * c.product_count) as total, cat.category_name')
+           ->innerJoin('c.product', 'p')
+           ->innerJoin('p.cat', 'cat')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Cart[] Returns an array of Cart objects
+    */
+   public function findPrice(): array
+   {
+       return $this->createQueryBuilder('c')
+           ->select('(p.price * c.product_count) as total')
+           ->innerJoin('c.product', 'p')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Cart[] Returns an array of Cart objects
+    */
+   public function countProductInCart(): array
+   {
+       return $this->createQueryBuilder('c')
+           ->select('count(c.id) as count')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
 //    /**
 //     * @return Cart[] Returns an array of Cart objects
 //     */
