@@ -45,7 +45,7 @@
                                     <td>{{cat.categoryParent}}</td>
                                 <td>
                                     <a href="{{path('category_edit',{'id':cat.id})}}">Edit</a>
-                                    <a href="#">Delete</a></td>
+                                    <a href="{{path('category_delete',{'id':cat.id})}}">Delete</a></td>
                                 </td>
                               </tr>
                               {% endfor %}

@@ -84,9 +84,9 @@ class ManageController extends AbstractController
      * @Route("/edit/{id}", name="product_edit",requirements={"id"="\d+"})
      */
     public function editAction(Request $req, Product $p,
-    SluggerInterface $slugger): Response
+    SluggerInterface $slugger, $id): Response
     {
-        
+        $pro=
         $form = $this->createForm(ProductType::class, $p);   
 
         $form->handleRequest($req);
@@ -135,19 +135,19 @@ class ManageController extends AbstractController
 
     // Category table
 
-    // /**
-    //  * @Route("/category", name="show_category")
-    //  */
-    // public function categoryShow(AuthenticationUtils $authenticationUtils, CategoryRepository $cat_repo): Response
-    // {
-    //     $cat = $cat_repo->findAll();
-    //     $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
-    //     $catMen = $cat_repo->findBy(['category_parent'=>'men']);
-    //     $username = $authenticationUtils->getLastUsername();
-    //     return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat,
-    //     'catMen'=>$catMen, 'catWomen'=>$catWomen
-    //     ]);
-    // }
+    /**
+     * @Route("/category", name="show_category")
+     */
+    public function categoryShow(AuthenticationUtils $authenticationUtils, CategoryRepository $cat_repo): Response
+    {
+        $cat = $cat_repo->findAll();
+        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen
+        ]);
+    }
 
 
 
@@ -196,51 +196,67 @@ class ManageController extends AbstractController
     /**
      * @Route("/addCat", name="category_insert")
      */
-    // public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
-    // {
-    //     $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
-    //     $catMen = $cat_repo->findBy(['category_parent'=>'men']);
-    //     $cat = new Category();
-    //     $form = $this->createForm(CategoryFormType::class, $cat);
-    //     $form->handleRequest($req);
-    //     if($form->isSubmitted() && $form->isValid()){
-    //         $cat_repo->save($cat, true);
-    //         return $this->redirectToRoute('show_category');
-    //     }
-    //     $username = $authenticationUtils->getLastUsername();
-    //     return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username
-    //     , 'catWomen'=>$catWomen, 'catMen'=>$catMen]);
-    // }
+    public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
+    {
+        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
+        $cat = new Category();
+        $form = $this->createForm(CategoryFormType::class, $cat);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $cat_repo->save($cat, true);
+            return $this->redirectToRoute('show_category');
+        }
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username
+        , 'catWomen'=>$catWomen, 'catMen'=>$catMen]);
+    }
 
 
 
 
     /**
-     * @Route("/editCat", name="category_edit")
+     * @Route("/editCat/{id}", name="category_edit")
      */
-    public function editCatAction(Request $req, Category $cate, CategoryRepository $repo,AuthenticationUtils $authenticationUtils): Response
+    public function editCatAction(Request $req,$id, CategoryRepository $repo,
+    AuthenticationUtils $authenticationUtils): Response
     {
-        $form=$this->createForm(CategoryFormType::class, $cate);
+        $cat = $repo->find($id);
+        if(!$cat){
+            throw $this->createNotFoundException('Category not found');
+        }
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+
+        $form=$this->createForm(CategoryFormType::class, $cat);
 
         $form->handleRequest($req);
         if($form->isSubmitted()&&$form->isValid()){
-            $cate->setCategoryName();
-            $cate->setCategoryParent();
-            $cate->setDescription();
-            $this->repo->save($cate,true);
-        return $this->redirectToRoute('show_category',[],Response::HTTP_SEE_OTHER);
+            $repo->save($cat,true);
+        return $this->redirectToRoute('show_category');
        
         }
        return $this->render("manage/catForm.html.twig",[
-
+        'form'=>$form->createView(),
+        'last_username'=>$username,
+        'catMen'=>$catMen,
+        'catWomen'=>$catWomen,
+        'category'=>$cat
        ]);
     }
+   
     /**
-     * @Route("/deleteCat", name="category_delete")
+ * @Route("/deleteCat/{id}", name="category_delete")
      */
-    public function deleteCat(): Response
+    public function deleteCat($id, Request $req,CategoryRepository $repo, AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('$0.html.twig', []);
+        $cat=$repo->findOneBy($id);
+        if(!$cat){
+            throw $this->createNotFoundException('Category not found');
+        }
+        $repo->delete($cat);
+        return $this->redirectToRoute('show_category');
     }
 
     // Product detail table
@@ -278,11 +294,33 @@ class ManageController extends AbstractController
         ]);
     }
     /**
-     * @Route("/editPDetail", name="pDetail_edit")
+     * @Route("/editPDetail/{id}", name="pDetail_edit")
      */
-    public function editPDetail(): Response
+    public function editPDetail(Request $req, $id, ProductDetailRepository $repo,
+    AuthenticationUtils $authenticationUtils, CategoryRepository $repo1): Response
     {
-        return $this->render('$0.html.twig', []);
+        $proDetail = $repo->find($id);
+        if(!$proDetail){
+            throw $this->createNotFoundException('Product detail not found');
+        }
+        $catWomen = $repo1->findBy(['category_parent'=>'women']);
+        $catMen = $repo1->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+
+        $form=$this->createForm(PDetailFormType::class,$proDetail);
+
+        $form->handleRequest($req);
+        if($form->isSubmitted()&&$form->isValid()){
+            $repo->save($proDetail,true);
+            return $this->redirectToRoute('productDetail_show');
+        }
+        return $this->render("manage/pDetailForm.html.twig",[
+            'form'=>$form->createView(),
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen,
+            'pDetail'=>$proDetail
+        ]);
     }
     /**
      * @Route("/deletePDetail", name="pDetail_delete")
