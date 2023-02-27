@@ -52,6 +52,18 @@ class ProductRepository extends ServiceEntityRepository
        ;
    }
 
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findId(): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('p.id')
+           ->innerJoin('p.carts', 'c')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }   
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

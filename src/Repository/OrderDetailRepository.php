@@ -39,6 +39,23 @@ class OrderDetailRepository extends ServiceEntityRepository
         }
     }
 
+   /**
+    * @return OrderDetail[] Returns an array of OrderDetail objects
+    */
+   public function showDetail($date): array
+   {
+       return $this->createQueryBuilder('od')
+           ->select('o.sum, od.product_quantity, p.product_name, p.price, p.image, pd.size')
+           ->innerJoin('od.od', 'o')
+           ->innerJoin('od.products', 'p')
+           ->innerJoin('p.productDetails', 'pd')
+           ->Where('o.date LIKE :val')
+           ->setParameter('val', '%'.$date.'%')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
 //    /**
 //     * @return OrderDetail[] Returns an array of OrderDetail objects
 //     */

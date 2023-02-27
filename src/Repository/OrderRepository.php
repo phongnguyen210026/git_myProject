@@ -39,6 +39,34 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+   /**
+    * @return Order[] Returns an array of Order objects
+    */
+   public function findOrderId($value): array
+   {
+       return $this->createQueryBuilder('o')
+           ->select('o.id')
+           ->Where('o.date LIKE :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Order[] Returns an array of Order objects
+    */
+   public function findDate($value): array
+   {
+       return $this->createQueryBuilder('o')
+           ->select('o.date')
+           ->Where('o.date LIKE :val')
+           ->setParameter('val', '%'.$value.'%')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */
