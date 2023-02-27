@@ -31,6 +31,7 @@ class ManageController extends AbstractController
     {
         $this->repo = $repo;
     }
+   
 
     // Product table
 
@@ -134,43 +135,105 @@ class ManageController extends AbstractController
 
     // Category table
 
-    /**
-     * @Route("/category", name="show_category")
-     */
-    public function categoryShow(AuthenticationUtils $authenticationUtils, CategoryRepository $cat_repo): Response
-    {
-        $cat = $cat_repo->findAll();
-        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
-        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
-        $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat,
-        'catMen'=>$catMen, 'catWomen'=>$catWomen
-        ]);
-    }
+    // /**
+    //  * @Route("/category", name="show_category")
+    //  */
+    // public function categoryShow(AuthenticationUtils $authenticationUtils, CategoryRepository $cat_repo): Response
+    // {
+    //     $cat = $cat_repo->findAll();
+    //     $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+    //     $catMen = $cat_repo->findBy(['category_parent'=>'men']);
+    //     $username = $authenticationUtils->getLastUsername();
+    //     return $this->render('manage/category.html.twig', ['last_username'=>$username, 'category'=>$cat,
+    //     'catMen'=>$catMen, 'catWomen'=>$catWomen
+    //     ]);
+    // }
+
+
+
+
+//     /**
+//  * @Route("/addCat", name="category_insert")
+//  * @Route("/editCat/{id}", name="category_edit")
+//  */
+// public function newOrEdit(Request $req, Category $category = null, CategoryRepository $repo, AuthenticationUtils  $authenticationUtils): Response
+// {
+//     $username = $authenticationUtils->getLastUsername();
+//     $catWomen = $repo->findBy(['category_parent'=>'women']);
+//     $catMen = $repo->findBy(['category_parent'=>'men']);
+//     // Get all categories for display in the form
+//     $categories = $repo->findAll();
+
+//     // If a category is not passed in, create a new one
+//     if (!$category) {
+//         $category = new Category();
+//     }
+
+//     // Create a form for the category
+//     $form = $this->createForm(CategoryFormType::class, $category);
+
+//     // Handle the form submission
+//     $form->handleRequest($req);
+//     if ($form->isSubmitted() && $form->isValid()) {
+//         // Save the category
+//         $repo->save($category);
+
+//         // Redirect to the category list page
+//         return $this->redirectToRoute('show_category');
+//     }
+
+//     // Render the category form
+//     return $this->render('manage/catForm.html.twig', [
+//         'category' => $category,
+//         'form' => $form->createView(),
+//         'categories' => $categories, 'catWomen'=>$catWomen, 'catMen'=>$catMen
+//         ,'last_username'=>$username
+//     ]);
+// }
+
+
+
     /**
      * @Route("/addCat", name="category_insert")
      */
-    public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
-    {
-        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
-        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
-        $cat = new Category();
-        $form = $this->createForm(CategoryFormType::class, $cat);
-        $form->handleRequest($req);
-        if($form->isSubmitted() && $form->isValid()){
-            $cat_repo->save($cat, true);
-            return $this->redirectToRoute('show_category');
-        }
-        $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username
-        , 'catWomen'=>$catWomen, 'catMen'=>$catMen]);
-    }
+    // public function addCatAction(Request $req, CategoryRepository $cat_repo, AuthenticationUtils $authenticationUtils): Response
+    // {
+    //     $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+    //     $catMen = $cat_repo->findBy(['category_parent'=>'men']);
+    //     $cat = new Category();
+    //     $form = $this->createForm(CategoryFormType::class, $cat);
+    //     $form->handleRequest($req);
+    //     if($form->isSubmitted() && $form->isValid()){
+    //         $cat_repo->save($cat, true);
+    //         return $this->redirectToRoute('show_category');
+    //     }
+    //     $username = $authenticationUtils->getLastUsername();
+    //     return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username
+    //     , 'catWomen'=>$catWomen, 'catMen'=>$catMen]);
+    // }
+
+
+
+
     /**
      * @Route("/editCat", name="category_edit")
      */
-    public function editCatAction(): Response
+    public function editCatAction(Request $req, Category $cate, CategoryRepository $repo,AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('$0.html.twig', []);
+        $form=$this->createForm(CategoryFormType::class, $cate);
+
+        $form->handleRequest($req);
+        if($form->isSubmitted()&&$form->isValid()){
+            $cate->setCategoryName();
+            $cate->setCategoryParent();
+            $cate->setDescription();
+            $this->repo->save($cate,true);
+        return $this->redirectToRoute('show_category',[],Response::HTTP_SEE_OTHER);
+       
+        }
+       return $this->render("manage/catForm.html.twig",[
+
+       ]);
     }
     /**
      * @Route("/deleteCat", name="category_delete")
@@ -244,12 +307,17 @@ class ManageController extends AbstractController
     /**
      * @Route("/addImage", name="image_insert")
      */
-    public function AddImage(Request $req, ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    public function AddImage(Request $req,SluggerInterface $slugger ,ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
     {
         $img = new ProductImage();
         $form = $this->createForm(ImageFormType::class, $img);
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
+            $imgFile=$form->get('file')->getData();
+            if($imgFile){
+                $newFilename=$this->uploadImage($imgFile,$slugger);
+                $img->setImage($newFilename);
+            }
             $repo->save($img, true);
             return $this->redirectToRoute('image_show');
         }

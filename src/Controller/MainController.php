@@ -11,6 +11,7 @@ use App\Repository\BrandRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductDetailRepository;
+use App\Repository\ProductImageRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,17 +117,18 @@ class MainController extends AbstractController
     /**
      * @Route("/showDetail/{id}", name="show_detail")
      */
-    public function showProductDetail($id, CategoryRepository $repo2, ProductRepository $repo, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3): Response
+    public function showProductDetail($id, CategoryRepository $repo2,ProductImageRepository $repo4, ProductRepository $repo,
+     AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3): Response
     {
         $showDetail = $repo->findBy(['id'=>$id]);
         $catName = $repo2->getCatName($id);
         $getProductDetail = $repo3->findBy(['id'=>$id]);
-
+        $showImage = $repo4->findBy(['product'=>$id]);
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
         return $this->render('main/pDetail.html.twig', ['showDetail'=>$showDetail, 'catMen'=>$catMen, 'catWomen'=>$catWomen,
-        'last_username'=>$username, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail
+        'last_username'=>$username, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail, 'showImage'=>$showImage
         ]);
     }
     /**

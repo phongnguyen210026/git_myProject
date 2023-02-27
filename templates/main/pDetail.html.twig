@@ -15,7 +15,27 @@
                 {% set img = show.image %}
                 <img class="img-fluid pb-1 w-100 h-75" id="MainImg" src="{{asset('uploads/'~img)}}" alt="">
             {% endfor %}
+                
+            {# {% for show in showImage %}
+                {% set img = show.image %}
+                <div class="small-img-col">
+                    <img class="small-img" width="100%" src="{{asset('uploads/'~img)}}" alt="">
+                </div>            
+            {% endfor %} #}
+              
+              
+                    {# <div class="small-img-col">
+                        <img class="small-img" width="100%" src="../img/Men's_fashion5.jpg" alt="">
+                    </div>
+                    <div class="small-img-col">
+                        <img class="small-img" width="100%" src="../img/Men's_fashion1.jpg" alt="">
+                    </div>
+                    <div class="small-img-col">
+                        <img class="small-img" width="100%" src="../img/Men's_fashion2.jpg" alt="">
+                    </div> #}
             </div> 
+           
+                 
             <div class="col-lg-6 col-md-12 col-12 px-5">
                 <nav aria-label="breadcrumb " >
                     <ol class="breadcrumb d-flex justify-content-center">
