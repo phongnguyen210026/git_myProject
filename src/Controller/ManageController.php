@@ -83,28 +83,40 @@ class ManageController extends AbstractController
      /**
      * @Route("/edit/{id}", name="product_edit",requirements={"id"="\d+"})
      */
-    public function editAction(Request $req, Product $p,
-    SluggerInterface $slugger, $id): Response
+    public function editAction(Request $req, ProductRepository $repo, AuthenticationUtils $authenticationUtils,
+    SluggerInterface $slugger, $id, CategoryRepository $repo1): Response
     {
-        $pro=
-        $form = $this->createForm(ProductType::class, $p);   
+        $pro=$repo->find($id);
+        if(!$pro){
+            throw $this->createNotFoundException('Product not found');
+        }
+        $catWomen = $repo1->findBy(['category_parent'=>'women']);
+        $catMen = $repo1->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+
+
+        $form = $this->createForm(ProductType::class, $pro);   
 
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
 
-            if($p->getImportDate()===null){
-                $p->setImportDate(new \DateTime());
+            if($pro->getImportDate()===null){
+                $pro->setImportDate(new \DateTime());
             }
             $imgFile = $form->get('file')->getData();
             if ($imgFile) {
                 $newFilename = $this->uploadImage($imgFile,$slugger);
-                $p->setImage($newFilename);
+                $pro->setImage($newFilename);
             }
-            $this->repo->save($p,true);
-            return $this->redirectToRoute('show_manage', [], Response::HTTP_SEE_OTHER);
+            $repo->save($pro,true);
+            return $this->redirectToRoute('show_manage');
         }
         return $this->render("product/form.html.twig",[ 
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen,
+            'product'=>$pro
         ]);
     }
 
@@ -366,6 +378,46 @@ class ManageController extends AbstractController
         'form'=>$form->createView()]);
     }
 
+    /**
+     * @Route("/editProImage/{id}", name="pImage_edit")
+     */
+    public function editProductImage(Request $req, AuthenticationUtils $authenticationUtils,
+    ProductImageRepository $repo ,CategoryRepository $repo1, $id,SluggerInterface $slugger): Response
+    {
+        $pImage=$repo->find($id);
+        if(!$pImage){
+            throw $this->createNotFoundException('Product Image not found');
+        }
+    
+        $catWomen = $repo1->findBy(['category_parent'=>'women']);
+        $catMen = $repo1->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+
+        $form=$this->createForm(ImageFormType::class, $pImage);
+
+        $form->handleRequest($req);
+        if($form->isSubmitted()&&$form->isValid()){
+            $imgFile=$form->get('file')->getData();
+            if($imgFile){
+                $newFilename=$this->uploadImage($imgFile,$slugger);
+                $pImage->setImage($newFilename);
+            }
+            $repo->save($pImage,true);
+            return $this->redirectToRoute('image_show');
+        }
+        return $this->render("manage/imageForm.html.twig",[
+            'form'=>$form->createView(),
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen,
+            'img'=>$pImage
+        ]);
+    }
+
+
+
+
+
     // Brand table
 
     /**
@@ -403,7 +455,35 @@ class ManageController extends AbstractController
     }
 
 
+/**
+ * @Route("editBrand/{id}", name="brand_edit")
+ */
+public function editBrand(Request $req, $id, BrandRepository $repo, CategoryRepository $repo1,
+AuthenticationUtils $authenticationUtils): Response
+{
+    $brand=$repo->find($id);
+    if(!$brand){
+        throw $this->createNotFoundException('Brand not found');
+    }
+    $catWomen = $repo1->findBy(['category_parent'=>'women']);
+    $catMen = $repo1->findBy(['category_parent'=>'men']);
+    $username = $authenticationUtils->getLastUsername();
 
+    $form=$this->createForm(BrandFormType::class, $brand);
+
+    $form->handleRequest($req);
+    if($form->isSubmitted()&&$form->isValid()){
+        $repo->save($brand,true);
+        return $this->redirectToRoute('brand_show');
+    }
+    return $this->render("manage/brandForm.html.twig",[
+        'form'=>$form->createView(),
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen,
+            'brand'=>$brand
+    ]);
+}
 
 
     
