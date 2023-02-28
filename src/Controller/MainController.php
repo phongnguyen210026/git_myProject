@@ -95,15 +95,16 @@ class MainController extends AbstractController
     /**
      * @Route("/search", name="app_search")
      */
-    public function searchAction(Request $req, ProductRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    public function searchAction(Request $req, ProductRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils, BrandRepository $repo3): Response
     {
         $param = $req->request->get('search-content');
         $searchResult = $repo->searchProduct($param);
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
+        $brand = $repo3->findAll();
         return $this->render('main/search.html.twig', ['last_username'=>$username, 'result'=>$searchResult
-        , 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'content'=>$param
+        , 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'content'=>$param, 'brand'=>$brand
         ]);
     }
     /**
@@ -152,7 +153,6 @@ class MainController extends AbstractController
             , 'brand'=>$brand, 'last_username'=>$username, 'showDetail'=>$showDetail, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail
             ]);
         }
-
         $checkCart = $repo->checkProductInCart($data[0]['id'], (int)$id);
         if($checkCart == []){
             $cart->setUser($getUserId);
@@ -201,7 +201,7 @@ class MainController extends AbstractController
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $brand = $repo2->findAll();
         return $this->render('main/cart.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 
-        'cart'=>$cart, 'subtotal'=>$subtotal, 'total'=>$total, 'count'=>$cart3[0]['count']]);
+        'cart'=>$cart, 'subtotal'=>$subtotal, 'total'=>$total, 'count'=>$cart3[0]['count'], 'message'=>'']);
         // return $this->json($cart);
     }
     // In cart
@@ -226,7 +226,8 @@ class MainController extends AbstractController
     /**
      * @Route("/addOrder", name="order_orderDetail")
      */
-    public function addOrder(Request $req, OrderRepository $repo, OrderDetailRepository $repo2, UserRepository $repo3, CartRepository $repo4, ProductRepository $repo5): Response
+    public function addOrder(Request $req, OrderRepository $repo, OrderDetailRepository $repo2, UserRepository $repo3, CartRepository $repo4, 
+    ProductRepository $repo5, AuthenticationUtils $authenticationUtils, CategoryRepository $repo6, BrandRepository $repo7): Response
     {   
         $order = new Order();
         $user = $this->getUser();
@@ -235,35 +236,50 @@ class MainController extends AbstractController
         ];
         $getUserId = $repo3->findOneBy(['id'=>$user]);
         $total = $req->query->get('total');
+        $subtotal = $req->query->get('subtotal');
         $address = $req->query->get('address');
         // $date = new \DateTime();
         $date= new DateTime("", new DateTimeZone("Asia/Ho_Chi_Minh"));
         // $date = $datetime->format('d-m-y h:i:s');
-        
-        $order->setSum((float)$total);
-        $order->setDate($date);
-        $order->setAddress($address);
-        $order->setUsers($getUserId);
-        $repo->save($order, true);
-        // return $this->json('ok');
 
-        // $oid = $repo->findOrderId($date);
-        $id = $order->getId($date);
-        $oid = $repo->findOneBy(['id'=>$id]);
-        $number = $repo4->countProductInCart();
-        $inCart = $repo4->findCartByUId($data[0]['id']);
-        // $product_id = $repo5->findOneBy(['id'=>$inCart[0]['product']]);
-        $num = $number[0]['count'];
-
-        for($i=0;$i<$num;$i++){
-            $oDetail = new OrderDetail();
-            $product_id = $repo5->findOneBy(['id'=>$inCart[$i]['product']]);
-            $oDetail->setProductQuantity($inCart[$i]['product_count']);
-            $oDetail->setOd($oid);
-            $oDetail->setProducts($product_id);
-            $repo2->save($oDetail, true);
+        $cart = $repo4->findProductInCart();
+        $cart2 = $repo4->countProductInCart();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo6->findBy(['category_parent'=>'women']);
+        $catMen = $repo6->findBy(['category_parent'=>'men']);
+        $brand = $repo7->findAll();
+        if($subtotal == $total || $address == ""){
+            return $this->render('main/cart.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 
+        'cart'=>$cart, 'subtotal'=>$subtotal, 'total'=>$total, 'count'=>$cart2[0]['count'], 'message'=>'Please make sure you have selected your delivery method and filled in your address']);
         }
-        return $this->redirectToRoute('app_bill');
+        else{
+            $order->setSum((float)$total);
+            $order->setDate($date);
+            $order->setAddress($address);
+            $order->setUsers($getUserId);
+            $repo->save($order, true);
+            // return $this->json('ok');
+    
+            // $oid = $repo->findOrderId($date);
+            $id = $order->getId($date);
+            $oid = $repo->findOneBy(['id'=>$id]);
+            $number = $repo4->countProductInCart();
+            $inCart = $repo4->findCartByUId($data[0]['id']);
+            // $product_id = $repo5->findOneBy(['id'=>$inCart[0]['product']]);
+            $num = $number[0]['count'];
+    
+            for($i=0;$i<$num;$i++){
+                $oDetail = new OrderDetail();
+                $product_id = $repo5->findOneBy(['id'=>$inCart[$i]['product']]);
+                $oDetail->setProductQuantity($inCart[$i]['product_count']);
+                $oDetail->setOd($oid);
+                $oDetail->setProducts($product_id);
+                $repo2->save($oDetail, true);
+            }
+            return $this->redirectToRoute('app_bill');
+        }
+        
+        // return $this->json($address);
     }
     /**
      * @Route("/bill", name="app_bill")
@@ -271,11 +287,23 @@ class MainController extends AbstractController
     public function showBill(OrderDetailRepository $repo, OrderRepository $repo2): Response
     {
         $user = $this->getUser();
+        $data[]=[
+            'id'=>$user->getId(),
+            'first_name'=>$user->getFirstName(),
+            'last_name'=>$user->getLastName(),
+        ];
+        $uid=$data[0]['id'];
+        $uFirstName = $data[0]['first_name'];
+        $uLastName = $data[0]['last_name'];
         $datetime= new DateTime("", new DateTimeZone("Asia/Ho_Chi_Minh"));
         $date = $datetime->format('Y-m-d H:i:s');
         $findDate = $repo2->findDate($date);
         $detail = $repo->showDetail($date);
-        // return $this->render('main/bill.html.twig', ['user'=>$user, 'detail'=>$detail, 'findDate'=>$findDate]);
-        return $this->json($detail);
+        $itemNumber = $repo->findAll();
+        $countItem = count($itemNumber);
+        return $this->render('main/bill.html.twig', ['user'=>$date, 'detail'=>$detail, 'findDate'=>$findDate, 
+        'uid'=>$uid, 'uFirstName'=>$uFirstName, 'uLastName'=>$uLastName, 'numItem'=>$countItem
+        ]);
+        // return $this->json($uLastName);
     }
 }

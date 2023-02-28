@@ -45,12 +45,9 @@ class OrderDetailRepository extends ServiceEntityRepository
    public function showDetail($date): array
    {
        return $this->createQueryBuilder('od')
-           ->select('o.sum, od.product_quantity, p.product_name, p.price, p.image, pd.size')
+           ->select('p.id, od.product_quantity, p.product_name, p.price, p.image')
            ->innerJoin('od.od', 'o')
            ->innerJoin('od.products', 'p')
-           ->innerJoin('p.productDetails', 'pd')
-           ->Where('o.date LIKE :val')
-           ->setParameter('val', '%'.$date.'%')
            ->getQuery()
            ->getArrayResult()
        ;

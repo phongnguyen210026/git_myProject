@@ -59,7 +59,7 @@ class OrderRepository extends ServiceEntityRepository
    public function findDate($value): array
    {
        return $this->createQueryBuilder('o')
-           ->select('o.date')
+           ->select('o.date, o.sum')
            ->Where('o.date LIKE :val')
            ->setParameter('val', '%'.$value.'%')
            ->getQuery()
