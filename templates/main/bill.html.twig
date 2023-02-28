@@ -62,14 +62,14 @@
                                                 <h6 class="text-black mb-0">{{d.product_name}}</h6>
                                             </div>
                                             <div class="col-md-2 col-lg-2 col-xl-2 d-flex justify-content-end">
-                                                <h5>{{d.price}}</h5>
+                                                <h5>${{d.price}}</h5>
                                             </div>
                                         </div>
                                         {% endfor %}
                                         {% for f in findDate %}
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="text-uppercase">Total price</h5>
-                                            <h5>{{f.sum}}</h5>
+                                            <h5>${{f.sum}}</h5>
                                         </div>
                                         {% endfor %}
                                         <hr class="my-4">

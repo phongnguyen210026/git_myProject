@@ -15,6 +15,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\OrderDetailRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductDetailRepository;
+use App\Repository\ProductImageRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use DateTime;
@@ -33,13 +34,14 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="app_home")
      */
-    public function home(Request $req, AuthenticationUtils $authenticationUtils, CategoryRepository $repo, BrandRepository $repo2): Response
+    public function home(Request $req, AuthenticationUtils $authenticationUtils, CategoryRepository $repo, BrandRepository $repo2, ProductRepository $repo3): Response
     {
+        $findTrend = $repo3->findTrending();
         $catMen = $repo->findBy(['category_parent'=>'men']);
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $brand = $repo2->findAll();
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('main/index.html.twig', ['last_username'=>$lastUsername, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand]);
+        return $this->render('main/index.html.twig', ['last_username'=>$lastUsername, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 'findTrend'=>$findTrend]);
     }
     /**
      * @Route("/account", name="app_account")
@@ -99,6 +101,22 @@ class MainController extends AbstractController
         ]);
     }
     /**
+     * @Route("/productBrand/{brand_id}", name="app_product_brand")
+     */
+    public function showproductBrand(AuthenticationUtils $authenticationUtils, $brand_id, ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3): Response
+    {
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        $brand = $repo3->findAll();
+        $brand2 = $repo3->findBy(['id'=>$brand_id]);
+
+        $findProductBrand = $repo->findProductByBrand($brand_id);
+        return $this->render('main/productBrand.html.twig', ['last_username'=>$username, 
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 'productBrand'=>$findProductBrand, 'findBrand'=>$brand2]);
+        // return $this->json($findProductBrand);
+    }
+    /**
      * @Route("/productBrandMen/{brand_id}", name="app_product_brand_men")
      */
     public function showProductByBrandMen(AuthenticationUtils $authenticationUtils, $brand_id, ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3): Response
@@ -146,12 +164,13 @@ class MainController extends AbstractController
     /**
      * @Route("/showDetail/{id}", name="show_detail")
      */
-    public function showProductDetail($id, CategoryRepository $repo2, ProductRepository $repo, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3, BrandRepository $repo4): Response
+    public function showProductDetail($id, CategoryRepository $repo2, ProductRepository $repo, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo3, BrandRepository $repo4, ProductImageRepository $repo5): Response
     {
         $showDetail = $repo->findBy(['id'=>$id]);
         $catName = $repo2->getCatName($id);
         $getProductDetail = $repo3->findBy(['id'=>$id]);
         $getSize = $repo3->findSize($id);
+        $getImg = $repo5->findBy(['product'=>$id]);
 
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
@@ -159,9 +178,9 @@ class MainController extends AbstractController
         $brand = $repo4->findAll();
         return $this->render('main/pDetail.html.twig', ['showDetail'=>$showDetail, 'catMen'=>$catMen, 'catWomen'=>$catWomen,
         'last_username'=>$username, 'catName'=>$catName, 'getProductDetail'=>$getProductDetail, 'brand'=>$brand, 'message'=>0,
-        'getSize'=>$getSize
+        'getSize'=>$getSize, 'getImg'=>$getImg
         ]);
-        // return $this->json($getProductDetail);
+        // return $this->json($getImg);
     }
     /**
      * @Route("/addCart{id}", name="add_cart")
@@ -351,5 +370,56 @@ class MainController extends AbstractController
         'uid'=>$uid, 'uFirstName'=>$uFirstName, 'uLastName'=>$uLastName, 'numItem'=>$countItem
         ]);
         // return $this->json($countItem);
+    }
+
+    /**
+     * @Route("/men", name="app_men")
+     */
+    public function showMen(ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
+    {
+        $findMen = $repo->findProductMen();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        // return $this->json($findMen);
+        return $this->render('main/shopMen.html.twig', ['findMen'=>$findMen, 'last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand]);
+    }
+    /**
+     * @Route("/women", name="app_women")
+     */
+    public function FunctionName(ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
+    {
+        $findWomen = $repo->findProductWomen();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        // return $this->json($findMen);
+        return $this->render('main/shopWomen.html.twig', ['findWomen'=>$findWomen, 'last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand]);
+    }
+    /**
+     * @Route("/trend", name="app_trend")
+     */
+    public function showTrending(ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
+    {
+        $findTrend = $repo->findTrending();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        return $this->render('main/index.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 'findTrend'=>$findTrend]);
+    }
+    /**
+     * @Route("/showTrend", name="show_trend")
+     */
+    public function showTrendDetail(ProductRepository $repo, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
+    {
+        $findTrend = $repo->findTrendDetail();
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        return $this->render('main/shopTrending.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand, 'findTrend'=>$findTrend]);
     }
 }

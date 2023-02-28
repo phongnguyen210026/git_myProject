@@ -129,13 +129,9 @@
                             <div class="menu-three">
                                 <ul>
                                     <li><h4>Shop by Top Brands</h4></li>
-                                    <li><a href="">Explore All Brands</a></li>
-                                    <li><a href="">Adidas</a></li>
-                                    <li><a href="">BDG</a></li>
-                                    <li><a href="">Champion</a></li>
-                                    <li><a href="">Dickies</a></li>
-                                    <li><a href="">FILA</a></li>
-                                    <li><a href="">Levi’s</a></li>
+                                    {% for b in brand %}
+                                        <li><a href="{{path('app_product_brand', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </li>

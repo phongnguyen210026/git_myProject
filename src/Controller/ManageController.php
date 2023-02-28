@@ -18,11 +18,13 @@ use App\Repository\ProductDetailRepository;
 use App\Repository\ProductImageRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class ManageController extends AbstractController
 {
@@ -51,11 +53,11 @@ class ManageController extends AbstractController
     /**
     * @Route("/add", name="product_insert")
     */
-    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils, CategoryRepository $repo, BrandRepository $repo2): Response
+    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils, CategoryRepository $repo2, BrandRepository $repo3): Response
     {   
-        $catWomen = $repo->findBy(['category_parent'=>'women']);
-        $catMen = $repo->findBy(['category_parent'=>'men']);
-        $brand = $repo2->findAll();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
         $p = new Product();
         $form = $this->createForm(ProductFormType::class, $p);
 
@@ -86,16 +88,16 @@ class ManageController extends AbstractController
      * @Route("/edit/{id}", name="product_edit",requirements={"id"="\d+"})
      */
     public function editAction(Request $req, Product $p,
-    SluggerInterface $slugger): Response
+    SluggerInterface $slugger, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
     {
         
-        $form = $this->createForm(ProductType::class, $p);   
+        $form = $this->createForm(ProductFormType::class, $p);   
 
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
 
-            if($p->getCreated()===null){
-                $p->setCreated(new \DateTime());
+            if($p->getImportDate()===null){
+                $p->setImportDate(new \DateTime());
             }
             $imgFile = $form->get('file')->getData();
             if ($imgFile) {
@@ -103,10 +105,18 @@ class ManageController extends AbstractController
                 $p->setImage($newFilename);
             }
             $this->repo->save($p,true);
-            return $this->redirectToRoute('product_show', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('show_manage', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("product/form.html.twig",[ 
-            'form' => $form->createView()
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render("manage/product.html.twig",[ 
+            'form' => $form->createView(),
+            'last_username'=>$username,
+            'catMen'=>$catMen,
+            'catWomen'=>$catWomen,
+            'brand'=>$brand
         ]);
     }
 
@@ -126,13 +136,15 @@ class ManageController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}",name="product_delete",requirements={"id"="\d+"})
+     * @Route("/delete/{pro_id}",name="product_delete",requirements={"id"="\d+"})
+     * 
+     * @Entity("p", expr="repository.find(pro_id)") 
      */
     
-    public function deleteAction(Request $request, Product $p): Response
+    public function deleteAction(Product $p): Response
     {
         $this->repo->remove($p,true);
-        return $this->redirectToRoute('product_show', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('show_manage', [], Response::HTTP_SEE_OTHER);
     }
 
     // Category table
@@ -164,21 +176,39 @@ class ManageController extends AbstractController
             return $this->redirectToRoute('show_category');
         }
         $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username]);
+        $catWomen = $cat_repo->findBy(['category_parent'=>'women']);
+        $catMen = $cat_repo->findBy(['category_parent'=>'men']);
+        $brand = $repo->findAll();
+        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand
+        ]);
     }
     /**
-     * @Route("/editCat", name="category_edit")
+     * @Route("/editCat/{id}", name="category_edit")
      */
-    public function editCatAction(): Response
+    public function editCatAction(Request $req, CategoryRepository $repo, Category $cat, AuthenticationUtils $authenticationUtils, BrandRepository $repo2): Response
     {
-        return $this->render('$0.html.twig', []);
+        $form = $this->createForm(CategoryFormType::class, $cat);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $repo->save($cat, true);
+            return $this->redirectToRoute('show_category');
+        }
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo->findBy(['category_parent'=>'women']);
+        $catMen = $repo->findBy(['category_parent'=>'men']);
+        $brand = $repo2->findAll();
+        return $this->render('manage/catForm.html.twig', ['form'=>$form->createView(), 'last_username'=>$username,
+        'catMen'=>$catMen, 'catWomen'=>$catWomen, 'brand'=>$brand
+        ]);
     }
     /**
-     * @Route("/deleteCat", name="category_delete")
+     * @Route("/deleteCat/{id}", name="category_delete")
      */
-    public function deleteCat(): Response
+    public function deleteCat(Category $cat, CategoryRepository $repo): Response
     {
-        return $this->render('$0.html.twig', []);
+        $repo->remove($cat, true);
+        return $this->redirectToRoute('show_category');
     }
 
     // Product detail table
@@ -218,51 +248,101 @@ class ManageController extends AbstractController
         ]);
     }
     /**
-     * @Route("/editPDetail", name="pDetail_edit")
+     * @Route("/editPDetail/{id}", name="pDetail_edit")
      */
-    public function editPDetail(): Response
+    public function editPDetail(Request $req, ProductDetail $pd, ProductDetailRepository $repo, CategoryRepository $repo2, BrandRepository $repo3, AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('$0.html.twig', []);
+        $brand = $repo3->findAll();
+        $form = $this->createForm(PDetailFormType::class, $pd);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $repo->save($pd, true);
+            return $this->redirectToRoute('productDetail_show');
+        }
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/pDetailForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen,
+        'last_username'=>$username, 'brand'=>$brand
+        ]);
     }
     /**
-     * @Route("/deletePDetail", name="pDetail_delete")
+     * @Route("/deletePDetail/{id}", name="pDetail_delete")
      */
-    public function deletePDetail(): Response
+    public function deletePDetail(ProductDetail $pd, ProductDetailRepository $repo): Response
     {
-        return $this->render('$0.html.twig', []);
+        $repo->remove($pd, true);
+        return $this->redirectToRoute('productDetail_show');
     }
 
     // Image table
     /**
      * @Route("/image", name="image_show")
      */
-    public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2): Response
+    public function showImage(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductImageRepository $repo2, BrandRepository $repo3): Response
     {
         $img = $repo2->showImg();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
         $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/image.html.twig', ['img'=>$img, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
+        return $this->render('manage/image.html.twig', ['img'=>$img, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username, 'brand'=>$brand]);
     }
     /**
      * @Route("/addImage", name="image_insert")
      */
-    public function AddImage(Request $req, ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    public function AddImage(Request $req, SluggerInterface $slugger, ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils, BrandRepository $repo3): Response
     {
         $img = new ProductImage();
         $form = $this->createForm(ImageFormType::class, $img);
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
+            $imgFile = $form->get('file')->getData();
+            if ($imgFile) {
+                $newFilename = $this->uploadImage($imgFile,$slugger);
+                $img->setImage($newFilename);
+            }
             $repo->save($img, true);
             return $this->redirectToRoute('image_show');
         }
         $username = $authenticationUtils->getLastUsername();
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
         return $this->render('manage/imageForm.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 
-        'form'=>$form->createView()]);
+        'form'=>$form->createView(), 'brand'=>$brand]);
     }
-
+    /**
+     * @Route("/editImg{id}", name="img_edit")
+     */
+    public function editImage(Request $req, ProductImage $img, SluggerInterface $slugger, ProductImageRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils, BrandRepository $repo3): Response
+    {
+        $form = $this->createForm(ImageFormType::class, $img);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $imgFile = $form->get('file')->getData();
+            if ($imgFile) {
+                $newFilename = $this->uploadImage($imgFile,$slugger);
+                $img->setImage($newFilename);
+            }
+            $repo->save($img, true);
+            return $this->redirectToRoute('image_show');
+        }
+        $username = $authenticationUtils->getLastUsername();
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
+        return $this->render('manage/imageForm.html.twig', ['last_username'=>$username, 'catMen'=>$catMen, 'catWomen'=>$catWomen, 
+        'form'=>$form->createView(), 'brand'=>$brand]);
+    }
+    /**
+     * @Route("/deleteImg{id}", name="img_delete")
+     */
+    public function deleteImage(ProductImage $img, ProductImageRepository $repo): Response
+    {
+        $repo->remove($img,true);
+        return $this->redirectToRoute('image_show');
+    }
     // Brand table
 
     /**
@@ -279,7 +359,7 @@ class ManageController extends AbstractController
     /**
      * @Route("/addBrand", name="brand_insert")
      */
-    public function addBrand(Request $req, SluggerInterface $slugger, BrandRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils): Response
+    public function addBrand(Request $req, SluggerInterface $slugger, BrandRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils, BrandRepository $repo3): Response
     {
         $brand = new Brand();
         $form = $this->createForm(BrandFormType::class, $brand);
@@ -295,8 +375,40 @@ class ManageController extends AbstractController
         }
         $catWomen = $repo2->findBy(['category_parent'=>'women']);
         $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo3->findAll();
         $username = $authenticationUtils->getLastUsername();
-        return $this->render('manage/brandForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username]);
+        return $this->render('manage/brandForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username, 'brand'=>$brand]);
+    }
+    /**
+     * @Route("/editBrand/{id}", name="brand_edit")
+     */
+    public function editBrand(Request $req, SluggerInterface $slugger, BrandRepository $repo, CategoryRepository $repo2, AuthenticationUtils $authenticationUtils,
+     Brand $brand): Response
+    {
+        $form = $this->createForm(BrandFormType::class, $brand);
+        $form->handleRequest($req);
+        if($form->isSubmitted() && $form->isValid()){
+            $imgFile = $form->get('file')->getData();
+            if ($imgFile) {
+                $newFilename = $this->uploadImage($imgFile,$slugger);
+                $brand->setImage($newFilename);
+            }
+            $repo->save($brand, true);
+            return $this->redirectToRoute('brand_show');
+        }
+        $catWomen = $repo2->findBy(['category_parent'=>'women']);
+        $catMen = $repo2->findBy(['category_parent'=>'men']);
+        $brand = $repo->findAll();
+        $username = $authenticationUtils->getLastUsername();
+        return $this->render('manage/brandForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen, 'last_username'=>$username, 'brand'=>$brand]);
+    }
+    /**
+     * @Route("/deleteBrand/{id}", name="brand_delete")
+     */
+    public function deleteBrand(Brand $brand, BrandRepository $repo): Response
+    {
+        $repo->remove($brand, true);
+        return $this->redirectToRoute('brand_show');
     }
 }
 

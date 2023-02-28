@@ -22,8 +22,8 @@
         {% endif %}
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-12">
-            {% for show in showDetail %}
-                {% set img = show.image %}
+            {% for i in getImg %}
+                {% set img = i.image %}
                 <img class="img-fluid pb-1 w-100 h-75" id="MainImg" src="{{asset('uploads/'~img)}}" alt="">
             {% endfor %}
             </div> 
@@ -89,6 +89,9 @@
                         }
                         .select-qty{
                             width: 27%;
+                        }
+                        #MainImg{
+                            object-fit: cover;
                         }
                     </style>
                     {% for show in showDetail %}
