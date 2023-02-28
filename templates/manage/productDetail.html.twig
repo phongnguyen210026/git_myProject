@@ -50,7 +50,7 @@
                                     <td>{{pd.status}}</td>
                                 <td>
                                     <a href="{{path('pDetail_edit',{'id':pd.id})}}">Edit</a>
-                                    <a href="#">Delete</a></td>
+                                    <a href="{{path('pDetail_delete',{'id':pd.id})}}">Delete</a></td>
                                 </td>
                             </tr>
                             {% endfor %}

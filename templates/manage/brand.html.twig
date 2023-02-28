@@ -44,7 +44,7 @@
                                 <td>{{b.company}}</td>
                                 <td>
                                     <a href="{{path('brand_edit',{'id':b.id})}}">Edit</a>
-                                    <a href="#">Delete</a></td>
+                                    <a href="{{path('brand_delete',{'id':b.id})}}">Delete</a></td>
                                 </td>
                             </tr>
                             {% endfor %}

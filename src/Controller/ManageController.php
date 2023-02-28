@@ -17,6 +17,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductDetailRepository;
 use App\Repository\ProductImageRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,7 +96,7 @@ class ManageController extends AbstractController
         $username = $authenticationUtils->getLastUsername();
 
 
-        $form = $this->createForm(ProductType::class, $pro);   
+        $form = $this->createForm(ProductFormType::class, $pro);   
 
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
@@ -111,7 +112,7 @@ class ManageController extends AbstractController
             $repo->save($pro,true);
             return $this->redirectToRoute('show_manage');
         }
-        return $this->render("product/form.html.twig",[ 
+        return $this->render("manage/product.html.twig",[ 
             'form' => $form->createView(),
             'last_username'=>$username,
             'catMen'=>$catMen,
@@ -139,10 +140,15 @@ class ManageController extends AbstractController
      * @Route("/delete/{id}",name="product_delete",requirements={"id"="\d+"})
      */
     
-    public function deleteAction(Request $request, Product $p): Response
+    public function deleteAction(EntityManagerInterface $entityManager,$id,ProductRepository $repo): Response
     {
-        $this->repo->remove($p,true);
-        return $this->redirectToRoute(' ', [], Response::HTTP_SEE_OTHER);
+        $p=$repo->find($id);
+        if(!$p){
+            throw $this->createNotFoundException('Product not found');
+        }
+        $entityManager->remove($p);
+        $entityManager->flush();
+        return $this->redirectToRoute('show_manage');
     }
 
     // Category table
@@ -261,13 +267,14 @@ class ManageController extends AbstractController
     /**
  * @Route("/deleteCat/{id}", name="category_delete")
      */
-    public function deleteCat($id, Request $req,CategoryRepository $repo, AuthenticationUtils $authenticationUtils): Response
+    public function deleteCat(EntityManagerInterface $entityManager,$id,CategoryRepository $repo): Response
     {
-        $cat=$repo->findOneBy($id);
+        $cat=$repo->find($id);
         if(!$cat){
             throw $this->createNotFoundException('Category not found');
         }
-        $repo->delete($cat);
+        $entityManager->remove($cat);
+        $entityManager->flush(); //Đồng bộ hóa với cơ sở dữ liệu khi xóa 1 thực thể trước đó
         return $this->redirectToRoute('show_category');
     }
 
@@ -335,11 +342,17 @@ class ManageController extends AbstractController
         ]);
     }
     /**
-     * @Route("/deletePDetail", name="pDetail_delete")
+     * @Route("/deletePDetail/{id}", name="pDetail_delete")
      */
-    public function deletePDetail(): Response
+    public function deletePDetail(EntityManagerInterface $entityManager, ProductDetailRepository $repo, $id): Response
     {
-        return $this->render('$0.html.twig', []);
+        $pd=$repo->find($id);
+        if(!$pd){
+            throw $this->createNotFoundException('Product Detail not found');
+        }
+        $entityManager->remove($pd);
+        $entityManager->flush();
+        return $this->redirectToRoute('productDetail_show');
     }
 
     // Image table
@@ -415,7 +428,19 @@ class ManageController extends AbstractController
     }
 
 
-
+/**
+ * @Route("deleteImageProduct/{id}", name="productImage_delete")
+ */
+public function deleteImageProduct(EntityManagerInterface $entityManager, $id, ProductImageRepository $repo): Response
+{   
+    $pI=$repo->find($id);
+    if(!$pI){
+        throw $this->createNotFoundException('Product Image not found');
+    }
+    $entityManager->remove($pI);
+    $entityManager->flush();
+    return $this->redirectToRoute('image_show');
+}
 
 
     // Brand table
@@ -485,7 +510,19 @@ AuthenticationUtils $authenticationUtils): Response
     ]);
 }
 
-
+/**
+ * @Route("deleteBrand/{id}", name="brand_delete")
+ */
+public function deleteBrand(EntityManagerInterface $entityManager, $id, BrandRepository $repo): Response
+{
+    $b=$repo->find($id);
+    if(!$b){
+        throw $this->createNotFoundException('Brand not found');
+    }
+    $entityManager->remove($b);
+    $entityManager->flush();
+    return $this->redirectToRoute('brand_show');
+}
     
 }
 

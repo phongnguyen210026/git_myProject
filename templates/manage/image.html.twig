@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Add Category | Admin{% endblock %}
+{% block title %}Image Product | Admin{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
@@ -43,7 +43,7 @@
                                 <th scope="row">{{i.product_name}}</th>
                                 <td>
                                     <a href="{{path('pImage_edit',{'id':i.id})}}">Edit</a>
-                                    <a href="#">Delete</a></td>
+                                    <a href="{{path('productImage_delete',{'id':i.id})}}">Delete</a></td>
                                 </td>
                             </tr>
                             {% endfor %}
