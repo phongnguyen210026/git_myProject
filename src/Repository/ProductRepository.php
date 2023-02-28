@@ -65,6 +65,40 @@ class ProductRepository extends ServiceEntityRepository
        ;
    }   
 
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findProductByBrandMen($value): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('p.id, p.product_name, p.price, p.image')
+           ->innerJoin('p.cat', 'c')
+           ->Where('c.category_parent = :val')
+           ->setParameter('val', 'men')
+           ->andWhere('p.brand = :value')
+           ->setParameter('value', $value)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findProductByBrandWomen($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.product_name, p.price, p.image')
+            ->innerJoin('p.cat', 'c')
+            ->Where('c.category_parent = :val')
+            ->setParameter('val', 'women')
+            ->andWhere('p.brand = :value')
+            ->setParameter('value', $value)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

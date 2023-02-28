@@ -6,10 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
-{% endblock %}
-
 {% block body %}
 {% include 'header.html.twig' %}
     <section class="pb-5 product-section">
@@ -51,7 +47,7 @@
                         {% set img = product.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
                             <a class="product-detail-link" href="{{path('show_detail', {'id':product.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
-                            <h2 class="product-title">{{product.productName}}</h2>
+                            <h2 class="product-title">{{product.product_name}}</h2>
                             <div class="product-price">${{product.price}}</div>
                         </div>
                     </div>

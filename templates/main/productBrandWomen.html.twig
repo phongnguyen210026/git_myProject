@@ -6,19 +6,25 @@
     <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
-{% endblock %}
-
 {% block body %}
 {% include 'header.html.twig' %}
     <section class="pb-5 product-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 search-result">
-                        <span>Your searched for "{{content}}"</span>
+                    <div class="col-md-4 title-page">
+                        {% for brand in findBrand %}
+                            <h3 class="page-title">{{brand.brandName}}</h3>
+                        {% endfor %}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4 browse">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{path('app_home')}}">Home</a></li>
+                            {% for brand in findBrand %}
+                                <li class="breadcrumb-item"><a href="#">{{brand.brandName}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
                         <select name="" id="" class="form-select">
                             <option value="">Featured</option>
                             <option value="descending">Price: High to Low</option>
@@ -35,14 +41,14 @@
                         color:#222222;
                     }
                     </style>
-                    {% for r in result %}
+                    {% for product in showProductBrand %}
                     <div class="col-md-3 col-sm-6 col-6 box-product">
                         <div class="product-box">
-                        {% set img = r.image %}
+                        {% set img = product.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
-                            <a class="product-detail-link" href="{{path('show_detail', {'id':r.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
-                            <h2 class="product-title">{{r.product_name}}</h2>
-                            <div class="product-price">${{r.price}}</div>
+                            <a class="product-detail-link" href="{{path('show_detail', {'id':product.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
+                            <h2 class="product-title">{{product.product_name}}</h2>
+                            <div class="product-price">${{product.price}}</div>
                         </div>
                     </div>
                     {% endfor %}

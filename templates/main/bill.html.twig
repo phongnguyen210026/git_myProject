@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Cart | Shopinist{% endblock %}
+{% block title %}Bill | Shopinist{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
@@ -69,7 +69,7 @@
                                         {% for f in findDate %}
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="text-uppercase">Total price</h5>
-                                            <h5>€ 49.00</h5>
+                                            <h5>{{f.sum}}</h5>
                                         </div>
                                         {% endfor %}
                                         <hr class="my-4">

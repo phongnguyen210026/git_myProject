@@ -52,6 +52,20 @@ class ProductDetailRepository extends ServiceEntityRepository
        ;
    }
 
+   /**
+    * @return ProductDetail[] Returns an array of ProductDetail objects
+    */
+   public function findSize($value): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('p.size')
+           ->Where('p.product = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
 //    /**
 //     * @return ProductDetail[] Returns an array of ProductDetail objects
 //     */

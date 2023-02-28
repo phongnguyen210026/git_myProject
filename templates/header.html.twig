@@ -94,7 +94,7 @@
                                 <ul>
                                     <li><h4>Brands</h4></li>
                                     {% for b in brand %}
-                                        <li><a href="{{path('app_product_brand',{'brand_id':b.id})}}">{{b.brandName}}</a></li>
+                                        <li><a href="{{path('app_product_brand_women', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -119,7 +119,7 @@
                                 <ul>
                                     <li><h4>Brands</h4></li>
                                     {% for b in brand %}
-                                        <li><a href="">{{b.brandName}}</a></li>
+                                        <li><a href="{{path('app_product_brand_men', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>

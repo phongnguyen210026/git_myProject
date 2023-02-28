@@ -51,10 +51,11 @@ class ManageController extends AbstractController
     /**
     * @Route("/add", name="product_insert")
     */
-    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils, CategoryRepository $repo): Response
+    public function createAction(Request $req, SluggerInterface $slugger, AuthenticationUtils $authenticationUtils, CategoryRepository $repo, BrandRepository $repo2): Response
     {   
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
+        $brand = $repo2->findAll();
         $p = new Product();
         $form = $this->createForm(ProductFormType::class, $p);
 
@@ -76,7 +77,8 @@ class ManageController extends AbstractController
             'form' => $form->createView(),
             'last_username'=>$username,
             'catMen'=>$catMen,
-            'catWomen'=>$catWomen
+            'catWomen'=>$catWomen,
+            'brand'=>$brand
         ]);
     }
 
@@ -184,21 +186,23 @@ class ManageController extends AbstractController
     /**
      * @Route("/productDetail", name="productDetail_show")
      */
-    public function showProductDetail(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductDetailRepository $repo2): Response
+    public function showProductDetail(AuthenticationUtils $authenticationUtils, CategoryRepository $repo, ProductDetailRepository $repo2, BrandRepository $repo3): Response
     {
+        $brand = $repo3->findAll();
         $pDetail = $repo2->showProductDetail();
         $username = $authenticationUtils->getLastUsername();
         $catWomen = $repo->findBy(['category_parent'=>'women']);
         $catMen = $repo->findBy(['category_parent'=>'men']);
         return $this->render('manage/productDetail.html.twig', ['last_username'=>$username, 'catMen'=>$catMen,
-        'catWomen'=>$catWomen, 'pDetail'=>$pDetail
+        'catWomen'=>$catWomen, 'pDetail'=>$pDetail, 'brand'=>$brand
         ]);
     }
     /**
      * @Route("/addPDetail", name="pDetail_insert")
      */
-    public function addProductDetail(Request $req, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo, CategoryRepository $repo2): Response
+    public function addProductDetail(Request $req, AuthenticationUtils $authenticationUtils, ProductDetailRepository $repo, CategoryRepository $repo2, BrandRepository $repo3): Response
     {
+        $brand = $repo3->findAll();
         $pd = new ProductDetail();
         $form = $this->createForm(PDetailFormType::class, $pd);
         $form->handleRequest($req);
@@ -210,7 +214,7 @@ class ManageController extends AbstractController
         $catMen = $repo2->findBy(['category_parent'=>'men']);
         $username = $authenticationUtils->getLastUsername();
         return $this->render('manage/pDetailForm.html.twig', ['form'=>$form->createView(), 'catMen'=>$catMen, 'catWomen'=>$catWomen,
-        'last_username'=>$username
+        'last_username'=>$username, 'brand'=>$brand
         ]);
     }
     /**
