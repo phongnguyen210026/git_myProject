@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Cart | Shopinist{% endblock %}
+{% block title %}Bill | Shopinist{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
@@ -7,7 +7,12 @@
 {% endblock %}
 
 {% block body %}
-    <section class="h-100 h-custom" style="background-color: #9a1212;">
+<style>
+    .Ok:hover{
+        background-color: #F4EECE;
+    }
+</style>
+    <section class="h-100 h-custom" style="background-color: #F4EECE;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12">
@@ -18,29 +23,27 @@
                                     <div class="p-5">
                                         <div class="d-flex justify-content-between align-items-center mb-5">
                                             <h1 class="fw-bold mb-0 text-black">Bill shop</h1>
-                                            <h6 class="mb-0 text-muted">1 items</h6>
+                                            <h6 class="mb-0 text-muted">{{numItem}} items</h6>
                                         </div>
-                                        {% for u in user %}
                                             <div class="row">
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                                 <h6 class="text-muted">User ID</h6>
-                                                <h6 class="text-black mb-0">{{u.id}}</h6>
+                                                <h6 class="text-black mb-0">{{uid}}</h6>
                                             </div>
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                                 <h6 class="text-muted">User name</h6>
-                                                <h6 class="text-black mb-0">{{u.first_name ~ u.last_name}}</h6>
-                                            </div>
-                                         {% endfor %}
-                                         {% for f in detail %}
+                                                <h6 class="text-black mb-0">{{uFirstName ~ uLastName}}</h6>
+                                        </div>
+                                         {% for f in findDate %}
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                                 <h6 class="text-muted">Date</h6>
-                                                <h6 class="text-black mb-0">{{d.date|date()}}</h6>
+                                                <h6 class="text-black mb-0">{{f.date|date()}}</h6>
                                             </div>
                                          {% endfor %}
                                         </div>
                                         <hr class="my-4">
-                                        <div class="row mb-4 d-flex justify-content-between align-items-center">  
-                                            {% for d in detail %}                                        
+                                         {% for d in detail %}  
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">                         
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                             {% set img = d.image %}
                                                 <img src="{{asset('uploads/'~img)}}"
@@ -58,29 +61,24 @@
                                                 <h6 class="text-muted">Product name</h6>
                                                 <h6 class="text-black mb-0">{{d.product_name}}</h6>
                                             </div>
-                                            <div class="col-md-2 col-lg-2 col-xl-2">
-                                                <h5>Size:{{d.size}}</h5>
-                                            </div>
                                             <div class="col-md-2 col-lg-2 col-xl-2 d-flex justify-content-end">
-                                                <h5>{{d.price}}</h5>
+                                                <h5>${{d.price}}</h5>
                                             </div>
-                                            {% endfor %}
                                         </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <h5 class="text-uppercase">Shipping</h5>
-                                            <h5>€5.00</h5>
-                                        </div>
+                                        {% endfor %}
+                                        {% for f in findDate %}
                                         <div class="d-flex justify-content-between mb-4">
                                             <h5 class="text-uppercase">Total price</h5>
-                                            <h5>€ 49.00</h5>
+                                            <h5>${{f.sum}}</h5>
                                         </div>
+                                        {% endfor %}
                                         <hr class="my-4">
 
                                         <div class="pt-5 d-flex justify-content-between">
-                                                <input type="submit" style="border-radius: 12%; border-width: 2px; 
-                                                border-color: rgb(0, 0, 0);" class="Ok btn btn-white" value="Back to shopping">
-                                                <input type="submit" style="border-radius: 12%; border-width: 2px; 
-                                                border-color: rgb(0, 0, 0);" class="Ok btn btn-white" value="Confirm, back homepage">
+                                                {# <input type="submit" style="border-radius: 12%; border-width: 2px; 
+                                                border-color: rgb(0, 0, 0);" class="Ok btn btn-white" value="Back to shopping"> #}
+                                                <a href="{{path('app_home')}}"><button class="btn btn-white Ok" style="border-radius: 12%; border-width: 2px; 
+                                                border-color: rgb(0, 0, 0);">Back to shopping</button></a>
                                         </div>
                                     </div>
                                 </div>

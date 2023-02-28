@@ -46,10 +46,10 @@ class ProductImageRepository extends ServiceEntityRepository
    public function showImg(): array
    {
        return $this->createQueryBuilder('pi')
-           ->select('pi.id, p.product_name')
+           ->select('pi.id, p.product_name, pi.image')
            ->innerJoin('pi.product', 'p')
            ->getQuery()
-           ->getResult()
+           ->getArrayResult()
        ;
    }
 

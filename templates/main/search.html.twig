@@ -15,13 +15,10 @@
     <section class="pb-5 product-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 title-page">
-                        <h3 class="page-title">Hoodie</h3>
-                    </div>
-                    <div class="col-md-4 search-result">
+                    <div class="col-md-6 search-result">
                         <span>Your searched for "{{content}}"</span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <select name="" id="" class="form-select">
                             <option value="">Featured</option>
                             <option value="descending">Price: High to Low</option>
@@ -43,9 +40,9 @@
                         <div class="product-box">
                         {% set img = r.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
-                            <a class="product-detail-link" href="#"><div class="view-click"><span class="view-link">View Details</span></div></a>
+                            <a class="product-detail-link" href="{{path('show_detail', {'id':r.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
                             <h2 class="product-title">{{r.product_name}}</h2>
-                            <div class="product-price"></div>
+                            <div class="product-price">${{r.price}}</div>
                         </div>
                     </div>
                     {% endfor %}

@@ -34,12 +34,12 @@
                         {{ form_widget(form.description, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
-                        <label for="cat-id" class="form-label">Category Name</label>
+                        <label for="cat-id" class="form-label">Category ID</label>
                         {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
                         {{ form_widget(form.cat, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
-                        <label for="cat-id" class="form-label">Brand</label>
+                        <label for="cat-id" class="form-label">Category ID</label>
                         {# <input type="text" class="form-control" id="product-name" name="product-name"> #}
                         {{ form_widget(form.brand, {'attr':{'class':'form-control'}}) }}
                     </div>
@@ -57,7 +57,7 @@
                     {% endif %}
                     </div>
                     {# <button class="btn btn-info confirm-btn">Confirm</button> #}
-                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info'}}) }}
+                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info confirm-btn'}}) }}
                 {# </form> #}
                 {{ form_end(form) }}
             </div>

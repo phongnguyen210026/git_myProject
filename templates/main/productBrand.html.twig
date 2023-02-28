@@ -6,25 +6,21 @@
     <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
-{% endblock %}
-
 {% block body %}
 {% include 'header.html.twig' %}
     <section class="pb-5 product-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 title-page">
-                        {% for brand in findBrand %}
-                            <h3 class="page-title">{{brand.brandName}}</h3>
+                        {% for b in findBrand %}
+                            <h3 class="page-title">{{b.brandName}}</h3>
                         {% endfor %}
                     </div>
                     <div class="col-md-4 browse">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{path('app_home')}}">Home</a></li>
-                            {% for brand in findBrand %}
-                                <li class="breadcrumb-item"><a href="#">{{brand.brandName}}</a></li>
+                            {% for b in findBrand %}
+                                <li class="breadcrumb-item"><a href="#">{{b.brandName}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -38,20 +34,17 @@
                         </select>
                     </div>
                     <style>
-                    .product-detail-link{
-                        color:#222222;
-                    }
-                    .product_detail-link:hover{
+                    .view-click a{
                         color:#222222;
                     }
                     </style>
-                    {% for product in showProductBrand %}
+                    {% for product in productBrand %}
                     <div class="col-md-3 col-sm-6 col-6 box-product">
                         <div class="product-box">
                         {% set img = product.image %}
                             <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
-                            <a class="product-detail-link" href="{{path('show_detail', {'id':product.id})}}"><div class="view-click"><span class="view-link">View Details</span></div></a>
-                            <h2 class="product-title">{{product.productName}}</h2>
+                            <div class="view-click"><a href="{{path('show_detail', {'id':product.id})}}"><span class="view-link">View Details</span></a></div>
+                            <h2 class="product-title">{{product.product_name}}</h2>
                             <div class="product-price">${{product.price}}</div>
                         </div>
                     </div>

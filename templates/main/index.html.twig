@@ -16,7 +16,7 @@
                         <p>
                             <b>Shop Women's</b>
                         </p>
-                        <a href="#"><span data-attr="Shop">Shop</span><span data-attr="Now">Now</span></a>
+                        <a href="{{path('app_women')}}"><span data-attr="Shop">Shop</span><span data-attr="Now">Now</span></a>
                     </div>
                     <div class="col-md-6 pt-5">
                         <img class="video-1" src="../images/pexels-vitória-santos-3050943.jpg" alt="">
@@ -40,82 +40,34 @@
                         <p>
                             <b>Shop Men's</b>
                         </p>
-                        <a href="#"><span data-attr="Shop">Shop</span><span data-attr="Now">Now</span></a>
+                        <a href="{{path('app_men')}}"><span data-attr="Shop">Shop</span><span data-attr="Now">Now</span></a>
                     </div>
                 </div>
             </div>
         </section>
         <section>
+        <style>
+        .view-click a{
+            color: #222222;
+        }
+        </style>
             <div class="container">
                 <div class="row pt-5">
                     <h2 class="title">TRENDING NOW</h2>
                     <div class="divider"></div>
-                    <div class="col-md-3 col-sm-6">
+                    {% for t in findTrend %}
+                    {% set img = t.image %}
+                        <div class="col-md-3 col-sm-6">
                         <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link"">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
+                            <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
+                            <div class="view-click"><a href="{{path('show_detail', {'id':t.id})}}"><span class="view-link">View Details</span></a></div>
+                            <h2 class="product-title">{{t.product_name}}</h2>
+                            <div class="product-price">{{t.price}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link"">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="product-box">
-                            <img class="product-img" src="../images/78783321_001_b.webp" alt="">
-                            <div class="view-click"><span class="view-link">View Details</span></div>
-                            <h2 class="product-title">Standard Cloth Hyperbaric Hoodie Sweatshirt</h2>
-                            <div class="product-price">$50</div>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <div class="col-12 text-center pt-3">
-                        <button class="shop-trending-btn">Shop All</button>
+                        <a href="{{path('show_trend')}}"><button class="shop-trending-btn">Shop All</button></a>
                     </div>
                 </div>
             </div>
@@ -143,13 +95,16 @@
                     </div>
                     <div class="logo-bar">
                         <ul class="logo-list">
-                            <li><a href=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 733.2 320.14" class="Pok xxh"><path d="M0 294.14h733.2v26H0zM49.45 144.59v63.78h71.61c28 0 41.27-10.58 41.27-32.06s-13.3-31.72-41.27-31.72zm.34-94.46v55.59h68.55c28 0 42.28-9.55 42.28-28.31 0-19.1-14.32-27.28-42.28-27.28zm85.94 197.45H0V8.87h129.59c55.24 0 74 26.6 74 58.65 0 23.53-10.23 44-34.1 54.57 28.64 10.57 42.29 34.78 42.29 61 0 33.46-22.51 64.49-76.05 64.49zm149-193.7h52.86c39.56 0 74 24.9 74 74.69 0 49.44-34.79 74.34-74 74.34h-52.84zm176.67 74.69c0-82.87-59.67-119.7-125.83-119.7H234.28v238.71h101.29c65.81 0 125.83-36.15 125.83-119.01zm170.86-15.69l-17.74 41.6h66.16c-7.84 31.72-35.46 56.61-69.57 56.61-46.38 0-82.52-37.17-82.52-82.87a83.06 83.06 0 01126.52-69.56l18.75-43A145.88 145.88 0 00611.11 0c-74.34 0-133 57.63-133 128.22 0 70.94 58.66 128.91 133 128.91 68.21 0 122.09-57.29 122.09-128.91v-15.34z"></path></svg></a></li>
-                            <li><a href=""><img src="../images/6a775f870fde948d44018facf29be321.svg" alt=""></a></li>
+                            {% for logo in brand %}
+                            {% set logo_img = logo.image %}
+                               <li><a href="{{path('app_product_brand', {'brand_id':logo.id})}}"><img src="{{asset('uploads/'~logo_img)}}" alt=""></a></li>
+                            {% endfor %}
+                            {# <li><a href=""><img src="../images/6a775f870fde948d44018facf29be321.svg" alt=""></a></li>
                             <li><a href=""><img src="../images/C-logo.svg" alt=""></a></li>
                             <li><a href=""><img src="../images/levis-logo.svg" alt=""></a></li>
                             <li><a href=""><img src="../images/logo.svg" alt=""></a></li>
                             <li><a href=""></a><img src="../images/Logos_Primary_Black_Small.svg" alt=""></li>
-                            <li><a href=""><img src="../images/icon-adidas-logo.svg" alt=""></a></li>
+                            <li><a href=""><img src="../images/icon-adidas-logo.svg" alt=""></a></li> #}
                         </ul>
                     </div>
                 </div>

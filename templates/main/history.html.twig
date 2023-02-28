@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Account | Shopinist{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/personal-order-history.css') }}" />
+{% endblock %}
+{% block javascripts %}
+    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="personal-section mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12">
+                        <ul class="nav-sidebar">
+                            <li class="active"><a href="#">account information</a></li>
+                            <li><a href="#">order history</a></li>
+                            <li><a href="#">sign out</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 col-12">
+                        <div class="heading">
+                            <h1 class="title-order-history">
+                                order history
+                            </h1>
+                        </div>
+                        <div class="table-box">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">*</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Quantity</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for h in history %}
+                                {% set img = h.image %}
+                                <tr>
+                                    <th scope="row">*</th>
+                                    <td><img src="{{asset('uploads/'~img)}}" alt="" width="20%" height= "20%"></td>
+                                    <td>{{h.product_name}}</td>
+                                    <td>{{h.product_quantity}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

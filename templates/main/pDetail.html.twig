@@ -8,34 +8,25 @@
 
 {% block body %}
 {% include 'header.html.twig' %}
-     <section id="featured" class="container sproduct">
+    <section id="featured" class="container sproduct">
+        {% if message != 0 %}
+        <style>
+            .alert-danger{
+                z-index: 2;
+            }
+        </style>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-12">
-            {% for show in showDetail %}
-                {% set img = show.image %}
+            {% for i in getImg %}
+                {% set img = i.image %}
                 <img class="img-fluid pb-1 w-100 h-75" id="MainImg" src="{{asset('uploads/'~img)}}" alt="">
             {% endfor %}
-                
-            {# {% for show in showImage %}
-                {% set img = show.image %}
-                <div class="small-img-col">
-                    <img class="small-img" width="100%" src="{{asset('uploads/'~img)}}" alt="">
-                </div>            
-            {% endfor %} #}
-              
-              
-                    {# <div class="small-img-col">
-                        <img class="small-img" width="100%" src="../img/Men's_fashion5.jpg" alt="">
-                    </div>
-                    <div class="small-img-col">
-                        <img class="small-img" width="100%" src="../img/Men's_fashion1.jpg" alt="">
-                    </div>
-                    <div class="small-img-col">
-                        <img class="small-img" width="100%" src="../img/Men's_fashion2.jpg" alt="">
-                    </div> #}
             </div> 
-           
-                 
             <div class="col-lg-6 col-md-12 col-12 px-5">
                 <nav aria-label="breadcrumb " >
                     <ol class="breadcrumb d-flex justify-content-center">
@@ -60,35 +51,63 @@
                        
                         {% endif %}    
                     {% endfor %}
-                {% for g in getProductDetail %}
-                    <form action="{{path('add_cart', {'id':g.id})}}">
+                {% for show in showDetail %}
+                    <form action="{{path('add_cart', {'id':show.id})}}">
                 {% endfor %}
                     <select name="size" class="my-3">
                         <option>Select Size</option>
-                        {% for g in getProductDetail %}
+                        {% for g in getSize %}
                             <option value="{{g.size}}">{{g.size}}</option>
                         {% endfor %}
                     </select>
                     <div class="number">
                         
-                        <i id="sub" class="bi bi-dash-circle-dotted minus"></i>
+                        {# <i id="sub" class="bi bi-dash-circle-dotted minus"></i>
                         <input id="qtyBox" class="input" type="text" value="1" name="quantity"/>
-                        <i id="add" class="bi bi-plus-circle-dotted plus"></i>
+                        <i id="add" class="bi bi-plus-circle-dotted plus"></i> #}
+                        <select name="quantity" class="form-select select-qty">
+                                                        <option selected>1</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    </select>
 
                     </div>
                    
                     <h4 class="mt-4 ">Description</h4>
-                    <span>It is very beautifull</span>
+                    <style>
+                        .description{
+                            font-size: 15px;
+                            text-align:justify;
+                        }
+                        .select-qty{
+                            width: 27%;
+                        }
+                        #MainImg{
+                            object-fit: cover;
+                        }
+                    </style>
+                    {% for show in showDetail %}
+                        <span class="description">{{show.description}}</span>
+                    {% endfor %}
+                    
 
 
 
                     <div class="pt-5">
                         <input type="submit" style="border-radius: 12%; border-width: 2px; 
                         border-color: rgb(0, 0, 0);" class="btnDetail btn btn-white" value="Add to Cart">
-                        <input type="submit" style="border-radius: 12%; border-width: 2px; 
-                        border-color: rgb(0, 0, 0);" class="btnDetail btn btn-white" value="Back to shopping">
                     </div>
                 </form>
+                    <div class="pt-5"><a href="{{path('app_home')}}"><button class="btnDetail btn btn-white" style="border-radius: 12%; border-width: 2px; 
+                        border-color: rgb(0, 0, 0);">Back to shopping</button></a></div>
                 </div>
 
             </div>
@@ -111,5 +130,5 @@
                 qty.value = parseInt(qty.value) -1;
             }
         });
-        </script>
+</script>
 {% endblock %}

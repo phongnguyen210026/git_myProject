@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product | Shopinist{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/product.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <link rel="stylesheet" href="{{ asset('Js/homepage.js') }}" />
+{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+    <section class="pb-5 product-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 title-page">
+                        <h3 class="page-title">Shop Trend</h3>
+                    </div>
+                    <div class="col-md-4 browse">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{path('app_home')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">trend</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="" id="" class="form-select">
+                            <option value="">Featured</option>
+                            <option value="descending">Price: High to Low</option>
+                            <option value="ascending">Price: Low to High</option>
+                            <option value="newest">Newest</option>
+                            <option value="best-selling">Best Sellers</option>
+                        </select>
+                    </div>
+                    <style>
+                    .view-click a{
+                        color:#222222;
+                    }
+                    </style>
+                    {% for t in findTrend %}
+                    <div class="col-md-3 col-sm-6 col-6 box-product">
+                        <div class="product-box">
+                        {% set img = t.image %}
+                            <img class="product-img" src="{{asset('uploads/'~img)}}" alt="">
+                            <div class="view-click"><a href="{{path('show_detail', {'id':t.id})}}"><span class="view-link">View Details</span></a></div>
+                            <h2 class="product-title">{{t.product_name}}</h2>
+                            <div class="product-price">${{t.price}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+{% include 'footer.html.twig' %}
+{% endblock %}

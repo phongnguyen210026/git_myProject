@@ -27,7 +27,7 @@
                             <option value="3">M</option>
                             <option value="3">S</option>
                         </select> #}
-                        {{ form_widget(form.size) }}
+                        {{ form_widget(form.size, {'attr':{'class':'form-control'}}) }}
                     </div>
                     <div class="mb-2">
                         <label for="stock" class="form-label">Stock</label>
@@ -39,10 +39,10 @@
                         <label class="form-check-label" for="flexRadioDefault1">
                           Available
                         </label> #}
-                        {{ form_widget(form.status) }}
+                        {{ form_widget(form.status, {'attr':{'class':'form-control'}}) }}
                     </div>
                     {# <button class="btn btn-info confirm-btn">Confirm</button> #}
-                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info'}}) }}
+                    {{ form_widget(form.save, {'attr':{'class':'btn btn-info confirm-btn'}}) }}
                 {# </form> #}
                 {{ form_end(form) }}
             </div>

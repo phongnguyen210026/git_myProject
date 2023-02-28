@@ -1,6 +1,3 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-# category_delete:  
-#   path:/deleteCat/{id}
-#   controller:App\Controller\ManageCategoryControllerPhpController::deleteCat

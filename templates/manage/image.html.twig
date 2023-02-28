@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Image Product | Admin{% endblock %}
+{% block title %}Add Category | Admin{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}" />
@@ -25,25 +25,28 @@
                             <h1 class="title-manage-info">
                                 Manage Image Detail
                             </h1>
-                            <a href="{{path('image_insert')}}"><button class="btn btn-info">Insert</button></a>
+                            <a class="insert-link" href="{{path('image_insert')}}"><button class="btn btn-info">Insert</button></a>
                         </div>
                         <table class="table">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Product</th>
+                                <th scope="col">Image</th>
                                 <th>Action</th>
                                 <!-- <th scope="col">Handle</th> -->
                               </tr>
                             </thead>
                             <tbody>
                             {% for i in img %}
+                            {% set img = i.image %}
                             <tr>
                                 <th scope="row">{{i.id}}</th>
-                                <th scope="row">{{i.product_name}}</th>
+                                <td>{{i.product_name}}</td>
+                                <td><img src="{{asset('uploads/'~img)}}" alt="" width="20%" height="20%"></td>
                                 <td>
-                                    <a href="{{path('pImage_edit',{'id':i.id})}}">Edit</a>
-                                    <a href="{{path('productImage_delete',{'id':i.id})}}">Delete</a></td>
+                                    <a href="{{path('img_edit', {'id':i.id})}}">Edit</a>
+                                    <a href="{{path('img_delete', {'id':i.id})}}">Delete</a></td>
                                 </td>
                             </tr>
                             {% endfor %}

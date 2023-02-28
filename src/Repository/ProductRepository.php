@@ -52,6 +52,126 @@ class ProductRepository extends ServiceEntityRepository
        ;
    }
 
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findId(): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('p.id')
+           ->innerJoin('p.carts', 'c')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }   
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findProductByBrandMen($value): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('p.id, p.product_name, p.price, p.image')
+           ->innerJoin('p.cat', 'c')
+           ->Where('c.category_parent = :val')
+           ->setParameter('val', 'men')
+           ->andWhere('p.brand = :value')
+           ->setParameter('value', $value)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findProductByBrandWomen($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.product_name, p.price, p.image')
+            ->innerJoin('p.cat', 'c')
+            ->Where('c.category_parent = :val')
+            ->setParameter('val', 'women')
+            ->andWhere('p.brand = :value')
+            ->setParameter('value', $value)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findProductMen(): array
+   {
+       return $this->createQueryBuilder('p')
+           ->innerJoin('p.cat', 'c')
+           ->Where('c.category_parent = :val')
+           ->setParameter('val', 'men')
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findProductWomen(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.cat', 'c')
+            ->Where('c.category_parent = :val')
+            ->setParameter('val', 'women')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findTrending(): array
+   {
+       return $this->createQueryBuilder('p')
+           ->select('sum(od.product_quantity) as Qty, p.id, p.product_name, p.image, p.price')
+           ->innerJoin('p.orderDetails', 'od')
+           ->groupBy('od.products')
+           ->orderBy('Qty', 'DESC')
+           ->setMaxResults(6)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findTrendDetail(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('sum(od.product_quantity) as Qty, p.id, p.product_name, p.image, p.price')
+            ->innerJoin('p.orderDetails', 'od')
+            ->groupBy('od.products')
+            ->orderBy('Qty', 'DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+   /**
+    * @return Product[] Returns an array of Product objects
+    */
+   public function findProductByBrand($value): array
+   {
+       return $this->createQueryBuilder('p')
+           ->innerJoin('p.brand', 'b')
+           ->Where('b.id = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getArrayResult()
+       ;
+   }
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

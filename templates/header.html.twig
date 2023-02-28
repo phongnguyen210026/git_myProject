@@ -51,7 +51,7 @@
                         <input name="search-content" type="text" class="search-box_input" required>
                         <button class="search-box_btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
-                    <a class="cart-link" href="#"><span class="cart"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                    <a class="cart-link" href="{{path('app_cart')}}"><span class="cart"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                         <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
                       </svg></span></a>
                     <div class="bars"><i class="fa-solid fa-bars"></i></div>
@@ -91,6 +91,12 @@
                                         <li><a href="{{path('app_product',{'cat_id':c.id})}}">{{c.categoryName}}</a></li>
                                     {% endfor %}
                                 </ul>
+                                <ul>
+                                    <li><h4>Brands</h4></li>
+                                    {% for b in brand %}
+                                        <li><a href="{{path('app_product_brand_women', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         </li>
                         <li class="drop-two">
@@ -112,12 +118,9 @@
                                 </ul>
                                 <ul>
                                     <li><h4>Brands</h4></li>
-                                    <li><a href="">BAGGU</a></li>
-                                    <li><a href="">BDG</a></li>
-                                    <li><a href="">Champion</a></li>
-                                    <li><a href="">Dickies</a></li>
-                                    <li><a href="">Levi’s</a></li>
-                                    <li><a href="">OBEY</a></li>
+                                    {% for b in brand %}
+                                        <li><a href="{{path('app_product_brand_men', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </li>
@@ -126,13 +129,9 @@
                             <div class="menu-three">
                                 <ul>
                                     <li><h4>Shop by Top Brands</h4></li>
-                                    <li><a href="">Explore All Brands</a></li>
-                                    <li><a href="">Adidas</a></li>
-                                    <li><a href="">BDG</a></li>
-                                    <li><a href="">Champion</a></li>
-                                    <li><a href="">Dickies</a></li>
-                                    <li><a href="">FILA</a></li>
-                                    <li><a href="">Levi’s</a></li>
+                                    {% for b in brand %}
+                                        <li><a href="{{path('app_product_brand', {'brand_id':b.id})}}">{{b.brandName}}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </li>
